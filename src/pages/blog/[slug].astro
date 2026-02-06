@@ -1,0 +1,381 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { getAllPosts, getPostBySlug, urlFor } from "../../lib/sanity";
+import { formatDate, calculateReadTime, type Post } from "../../lib/posts";
+import { PortableText } from "@portabletext/react";
+
+// Required for static site generation - fetch all post slugs from Sanity
+export async function getStaticPaths() {
+    const posts = await getAllPosts();
+
+    return posts.map((post: Post) => ({
+        params: { slug: post.slug },
+        props: { post },
+    }));
+}
+
+interface Props {
+    post: Post;
+}
+
+const { post } = Astro.props;
+const fullPost = await getPostBySlug(post.slug);
+
+const formattedDate = formatDate(fullPost.publishedAt);
+const readTime = calculateReadTime(fullPost.content);
+const imageUrl = fullPost.featuredImage
+    ? urlFor(fullPost.featuredImage).width(1200).height(600).url()
+    : null;
+---
+
+<BaseLayout
+    title={`${fullPost.seo?.metaTitle || fullPost.title} | SEO Portfolio`}
+    description={fullPost.seo?.metaDescription || fullPost.excerpt}
+    ogImage={imageUrl || undefined}
+>
+    <Header />
+
+    <main>
+        <article class="article">
+            <!-- Article Header -->
+            <header class="article-header">
+                <div class="container container-content">
+                    <a href="/blog" class="back-link">← Back to Blog</a>
+                    {
+                        fullPost.categories?.[0] && (
+                            <span class="tag">
+                                {fullPost.categories[0].title}
+                            </span>
+                        )
+                    }
+                    <h1>{fullPost.title}</h1>
+                    <div class="article-meta">
+                        <time datetime={fullPost.publishedAt}
+                            >{formattedDate}</time
+                        >
+                        <span class="separator">•</span>
+                        <span>{readTime}</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Featured Image -->
+            {
+                imageUrl && (
+                    <div class="article-image">
+                        <div class="container">
+                            <img
+                                src={imageUrl}
+                                alt={
+                                    fullPost.featuredImage?.alt ||
+                                    fullPost.title
+                                }
+                            />
+                        </div>
+                    </div>
+                )
+            }
+
+            <!-- Article Content -->
+            <div class="article-content">
+                <div class="container container-content">
+                    <div class="prose" id="content">
+                        {
+                            fullPost.content ? (
+                                <div
+                                    set:html={renderPortableText(
+                                        fullPost.content,
+                                    )}
+                                />
+                            ) : (
+                                <p>No content available.</p>
+                            )
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Article Footer -->
+            <footer class="article-footer">
+                <div class="container container-content">
+                    <div class="share-section">
+                        <span class="share-label">Share this article:</span>
+                        <div class="share-buttons">
+                            <a
+                                href="#"
+                                class="share-btn"
+                                aria-label="Share on Twitter">Twitter</a
+                            >
+                            <a
+                                href="#"
+                                class="share-btn"
+                                aria-label="Share on LinkedIn">LinkedIn</a
+                            >
+                            <a href="#" class="share-btn" aria-label="Copy link"
+                                >Copy Link</a
+                            >
+                        </div>
+                    </div>
+
+                    <div class="author-card card">
+                        <div class="author-info">
+                            <h4>About the Author</h4>
+                            <p>
+                                SEO professional with 8+ years of experience
+                                helping businesses grow their organic presence
+                                through data-driven strategies.
+                            </p>
+                            <a href="/about" class="btn btn-ghost">Learn More</a
+                            >
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </article>
+    </main>
+
+    <Footer />
+</BaseLayout>
+
+<script>
+    // Simple portable text to HTML renderer
+    function renderPortableText(blocks: any[]): string {
+        if (!blocks) return "";
+
+        return blocks
+            .map((block) => {
+                if (block._type === "block") {
+                    const text =
+                        block.children
+                            ?.map((child: any) => {
+                                if (child._type === "span") {
+                                    let t = child.text || "";
+                                    if (child.marks?.includes("strong"))
+                                        t = `<strong>${t}</strong>`;
+                                    if (child.marks?.includes("em"))
+                                        t = `<em>${t}</em>`;
+                                    if (child.marks?.includes("code"))
+                                        t = `<code>${t}</code>`;
+                                    return t;
+                                }
+                                return "";
+                            })
+                            .join("") || "";
+
+                    switch (block.style) {
+                        case "h2":
+                            return `<h2>${text}</h2>`;
+                        case "h3":
+                            return `<h3>${text}</h3>`;
+                        case "h4":
+                            return `<h4>${text}</h4>`;
+                        case "blockquote":
+                            return `<blockquote>${text}</blockquote>`;
+                        default:
+                            return `<p>${text}</p>`;
+                    }
+                }
+                return "";
+            })
+            .join("\n");
+    }
+
+    // Make it available for SSR
+    if (typeof window === "undefined") {
+        (globalThis as any).renderPortableText = renderPortableText;
+    }
+</script>
+
+<style>
+    /* Article Header */
+    .article-header {
+        padding: var(--space-16) 0 var(--space-8);
+    }
+
+    .back-link {
+        display: inline-block;
+        font-size: var(--text-sm);
+        color: var(--color-text-muted);
+        margin-bottom: var(--space-6);
+        transition: color var(--transition-base);
+    }
+
+    .back-link:hover {
+        color: var(--color-accent);
+    }
+
+    .tag {
+        display: inline-block;
+        padding: var(--space-1) var(--space-3);
+        font-size: var(--text-xs);
+        font-weight: var(--font-medium);
+        color: var(--color-accent);
+        background: var(--color-accent-subtle);
+        border-radius: var(--border-radius-full);
+        margin-bottom: var(--space-4);
+    }
+
+    .article-header h1 {
+        font-size: var(--text-4xl);
+        line-height: 1.2;
+        margin-bottom: var(--space-4);
+    }
+
+    .article-meta {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        font-size: var(--text-sm);
+        color: var(--color-text-muted);
+    }
+
+    .separator {
+        color: var(--color-border);
+    }
+
+    /* Article Image */
+    .article-image {
+        margin-bottom: var(--space-12);
+    }
+
+    .article-image img {
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+        border-radius: var(--border-radius-lg);
+        aspect-ratio: 2 / 1;
+        object-fit: cover;
+    }
+
+    /* Article Content - Prose Styles */
+    .prose {
+        color: var(--color-text);
+        font-size: var(--text-lg);
+        line-height: 1.8;
+    }
+
+    .prose :global(h2) {
+        font-family: var(--font-heading);
+        font-size: var(--text-2xl);
+        font-weight: var(--font-bold);
+        margin-top: var(--space-12);
+        margin-bottom: var(--space-4);
+        color: var(--color-text);
+    }
+
+    .prose :global(h3) {
+        font-family: var(--font-heading);
+        font-size: var(--text-xl);
+        font-weight: var(--font-semibold);
+        margin-top: var(--space-8);
+        margin-bottom: var(--space-3);
+        color: var(--color-text);
+    }
+
+    .prose :global(p) {
+        margin-bottom: var(--space-6);
+    }
+
+    .prose :global(ul),
+    .prose :global(ol) {
+        margin-bottom: var(--space-6);
+        padding-left: var(--space-6);
+    }
+
+    .prose :global(ul) {
+        list-style-type: disc;
+    }
+
+    .prose :global(ol) {
+        list-style-type: decimal;
+    }
+
+    .prose :global(li) {
+        margin-bottom: var(--space-2);
+        color: var(--color-text-muted);
+    }
+
+    .prose :global(strong) {
+        color: var(--color-text);
+        font-weight: var(--font-semibold);
+    }
+
+    .prose :global(a) {
+        color: var(--color-accent);
+        text-decoration: underline;
+    }
+
+    .prose :global(a:hover) {
+        color: var(--color-accent-hover);
+    }
+
+    /* Article Footer */
+    .article-footer {
+        padding: var(--space-12) 0 var(--space-16);
+        border-top: 1px solid var(--color-border);
+        margin-top: var(--space-12);
+    }
+
+    .share-section {
+        display: flex;
+        align-items: center;
+        gap: var(--space-4);
+        margin-bottom: var(--space-8);
+    }
+
+    .share-label {
+        font-size: var(--text-sm);
+        color: var(--color-text-muted);
+    }
+
+    .share-buttons {
+        display: flex;
+        gap: var(--space-3);
+    }
+
+    .share-btn {
+        padding: var(--space-2) var(--space-4);
+        font-size: var(--text-sm);
+        color: var(--color-text-muted);
+        background: var(--color-card-bg);
+        border: 1px solid var(--color-border);
+        border-radius: var(--border-radius-md);
+        text-decoration: none;
+        transition: all var(--transition-base);
+    }
+
+    .share-btn:hover {
+        color: var(--color-accent);
+        border-color: var(--color-accent);
+    }
+
+    .author-card {
+        padding: var(--space-6);
+    }
+
+    .author-info h4 {
+        font-size: var(--text-lg);
+        margin-bottom: var(--space-2);
+    }
+
+    .author-info p {
+        color: var(--color-text-muted);
+        font-size: var(--text-sm);
+        line-height: 1.6;
+        margin-bottom: var(--space-4);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .article-header h1 {
+            font-size: var(--text-3xl);
+        }
+
+        .share-section {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
