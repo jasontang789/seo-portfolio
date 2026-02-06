@@ -28,6 +28,59 @@ const readTime = calculateReadTime(fullPost.content);
 const imageUrl = fullPost.featuredImage
     ? urlFor(fullPost.featuredImage).width(1200).height(600).url()
     : null;
+
+// Helper function to convert Portable Text to HTML
+function renderPortableText(blocks: any[]): string {
+    if (!blocks || !Array.isArray(blocks)) return "";
+
+    return blocks
+        .map((block) => {
+            if (block._type !== "block") {
+                // Handle images
+                if (block._type === "image") {
+                    const imgUrl = urlFor(block).width(800).url();
+                    return `<figure><img src="${imgUrl}" alt="${block.alt || ""}" />${block.caption ? `<figcaption>${block.caption}</figcaption>` : ""}</figure>`;
+                }
+                return "";
+            }
+
+            // Handle text blocks
+            const style = block.style || "normal";
+            const children =
+                block.children
+                    ?.map((child: any) => {
+                        let text = child.text || "";
+
+                        // Apply marks (bold, italic, etc.)
+                        if (child.marks) {
+                            child.marks.forEach((mark: string) => {
+                                if (mark === "strong")
+                                    text = `<strong>${text}</strong>`;
+                                if (mark === "em") text = `<em>${text}</em>`;
+                                if (mark === "code")
+                                    text = `<code>${text}</code>`;
+                            });
+                        }
+                        return text;
+                    })
+                    .join("") || "";
+
+            // Map styles to HTML tags
+            switch (style) {
+                case "h2":
+                    return `<h2>${children}</h2>`;
+                case "h3":
+                    return `<h3>${children}</h3>`;
+                case "h4":
+                    return `<h4>${children}</h4>`;
+                case "blockquote":
+                    return `<blockquote>${children}</blockquote>`;
+                default:
+                    return `<p>${children}</p>`;
+            }
+        })
+        .join("\n");
+}
 ---
 
 <BaseLayout
