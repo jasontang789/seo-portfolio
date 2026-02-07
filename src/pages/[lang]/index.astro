@@ -14,9 +14,9 @@ export function getStaticPaths() {
 
 const { lang } = Astro.params as { lang: SupportedLanguage };
 
-const baseTitle = "SEO Professional Portfolio | Your Name";
+const baseTitle = "SEO Portfolio | Real Projects & Learning Journey";
 const baseDescription =
-    "Expert SEO strategist helping businesses rank higher and grow organic traffic. Explore case studies, insights, and proven SEO methodologies.";
+    "SEO portfolio showcasing real projects, technical optimization, case studies, and continuous growth through hands-on testing and data-driven strategies.";
 
 // Translate if Chinese
 const pageTitle = lang === "zh" ? await translateToZh(baseTitle) : baseTitle;
