@@ -93,11 +93,11 @@ function renderPortableText(blocks: any[]): string {
             // Map styles to HTML tags
             switch (style) {
                 case "h2":
-                    return `<h2>${children}</h2>`;
+                    return `<h2 class="text-3xl md:text-4xl font-bold mt-12 mb-6 text-text">${children}</h2>`;
                 case "h3":
-                    return `<h3>${children}</h3>`;
+                    return `<h3 class="text-2xl md:text-3xl font-semibold mt-10 mb-4 text-text">${children}</h3>`;
                 case "h4":
-                    return `<h4>${children}</h4>`;
+                    return `<h4 class="text-xl md:text-2xl font-semibold mt-8 mb-3 text-text">${children}</h4>`;
                 case "blockquote":
                     return `<blockquote>${children}</blockquote>`;
                 default:
