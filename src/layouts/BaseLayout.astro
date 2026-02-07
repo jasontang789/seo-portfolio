@@ -76,7 +76,7 @@ const htmlLang = lang === "zh" ? "zh-CN" : "en";
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={new URL(ogImage, siteUrl)} />
     <meta property="og:locale" content={lang === "zh" ? "zh_CN" : "en_US"} />
 
     <!-- Twitter -->
@@ -84,7 +84,7 @@ const htmlLang = lang === "zh" ? "zh-CN" : "en";
     <meta name="twitter:url" content={canonicalUrl} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image" content={new URL(ogImage, siteUrl)} />
 
     <!-- Fonts: Inter + Montserrat (Async Load) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
