@@ -33,91 +33,195 @@ const translations = {
 
 const t = translations[lang];
 const RECAPTCHA_SITE_KEY = "6LeQYGMsAAAAAKVEO5JD3PLKai_LUGUJZv0eP2mo";
+const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
 ---
 
 <section class="contact-section" id="contact">
-    <div class="contact-container">
-        <h2>{t.title}</h2>
-        <p class="contact-subtitle">{t.subtitle}</p>
-
-        <form
-            id="contact-form"
-            action="https://api.web3forms.com/submit"
-            method="POST"
-            class="contact-form"
-        >
-            <!-- Web3Forms Access Key - Get yours free at web3forms.com -->
-            <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_KEY" />
-            <input
-                type="hidden"
-                name="subject"
-                value="New Contact from SEO Portfolio"
-            />
-            <input
-                type="hidden"
-                name="from_name"
-                value="SEO Portfolio Contact"
-            />
-            <input
-                type="hidden"
-                name="redirect"
-                value="https://seo-portfolio.ray00ooki.workers.dev/en/?success=true"
-            />
-
-            <!-- reCAPTCHA v3 token -->
-            <input
-                type="hidden"
-                name="recaptcha_response"
-                id="recaptchaResponse"
-            />
-
-            <div class="form-group">
-                <label for="name">{t.name}</label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    placeholder={t.name}
-                />
-            </div>
-
-            <div class="form-group">
-                <label for="email">{t.email}</label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    placeholder={t.email}
-                />
-            </div>
-
-            <div class="form-group">
-                <label for="message">{t.message}</label>
-                <textarea
-                    id="message"
-                    name="message"
-                    rows="5"
-                    required
-                    placeholder={t.message}></textarea>
-            </div>
-
-            <button type="submit" class="submit-btn" id="submit-btn">
-                <span class="btn-text">{t.send}</span>
-                <span class="btn-loading" style="display: none;"
-                    >{t.sending}</span
+    <div class="contact-wrapper">
+        <div class="contact-info">
+            <div class="info-content">
+                <span class="info-label"
+                    >{lang === "zh" ? "联系方式" : "Contact Info"}</span
                 >
-            </button>
+                <h2>{t.title}</h2>
+                <p class="contact-subtitle">{t.subtitle}</p>
 
-            <div id="form-status" class="form-status"></div>
-        </form>
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <span class="contact-icon">📧</span>
+                        <div>
+                            <span class="contact-label"
+                                >{lang === "zh" ? "邮箱" : "Email"}</span
+                            >
+                            <a href="mailto:hello@example.com"
+                                >hello@example.com</a
+                            >
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📍</span>
+                        <div>
+                            <span class="contact-label"
+                                >{lang === "zh" ? "地点" : "Location"}</span
+                            >
+                            <span>{lang === "zh" ? "新加坡" : "Singapore"}</span
+                            >
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">⏰</span>
+                        <div>
+                            <span class="contact-label"
+                                >{
+                                    lang === "zh" ? "响应时间" : "Response Time"
+                                }</span
+                            >
+                            <span
+                                >{
+                                    lang === "zh"
+                                        ? "24小时内"
+                                        : "Within 24 hours"
+                                }</span
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="LinkedIn">
+                        <svg
+                            width="20"
+                            height="20"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                            ><path
+                                d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+                            ></path></svg
+                        >
+                    </a>
+                    <a href="#" class="social-link" aria-label="Twitter">
+                        <svg
+                            width="20"
+                            height="20"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                            ><path
+                                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                            ></path></svg
+                        >
+                    </a>
+                    <a href="#" class="social-link" aria-label="GitHub">
+                        <svg
+                            width="20"
+                            height="20"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                            ><path
+                                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                            ></path></svg
+                        >
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-form-wrapper">
+            <form
+                id="contact-form"
+                action="https://api.web3forms.com/submit"
+                method="POST"
+                class="contact-form"
+            >
+                <input type="hidden" name="access_key" value={WEB3FORMS_KEY} />
+                <input
+                    type="hidden"
+                    name="subject"
+                    value="New Contact from SEO Portfolio"
+                />
+                <input
+                    type="hidden"
+                    name="from_name"
+                    value="SEO Portfolio Contact"
+                />
+                <input
+                    type="hidden"
+                    name="redirect"
+                    value={`https://seo-portfolio.ray00ooki.workers.dev/${lang}/?success=true`}
+                />
+                <input
+                    type="hidden"
+                    name="recaptcha_response"
+                    id="recaptchaResponse"
+                />
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">{t.name}</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            required
+                            placeholder={t.name}
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">{t.email}</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            required
+                            placeholder={t.email}
+                        />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">{t.message}</label>
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="6"
+                        required
+                        placeholder={t.message}></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submit-btn">
+                    <span class="btn-text">{t.send}</span>
+                    <span class="btn-loading" style="display: none;"
+                        >{t.sending}</span
+                    >
+                    <svg
+                        class="btn-arrow"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    >
+                        <path d="M5 12h14M12 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+
+                <div id="form-status" class="form-status"></div>
+
+                <p class="form-privacy">
+                    {
+                        lang === "zh"
+                            ? "🔒 您的信息是安全的，我们不会分享给第三方。"
+                            : "🔒 Your information is secure and will never be shared."
+                    }
+                </p>
+            </form>
+        </div>
     </div>
 </section>
 
 <!-- reCAPTCHA v3 Script -->
 <script is:inline define:vars={{ RECAPTCHA_SITE_KEY }}>
-    // Load reCAPTCHA v3
     const script = document.createElement("script");
     script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
     script.async = true;
@@ -134,12 +238,10 @@ const RECAPTCHA_SITE_KEY = "6LeQYGMsAAAAAKVEO5JD3PLKai_LUGUJZv0eP2mo";
             const btnLoading = submitBtn.querySelector(".btn-loading");
             const formStatus = document.getElementById("form-status");
 
-            // Show loading state
             btnText.style.display = "none";
             btnLoading.style.display = "inline";
             submitBtn.disabled = true;
 
-            // Get reCAPTCHA token
             grecaptcha.ready(function () {
                 grecaptcha
                     .execute(RECAPTCHA_SITE_KEY, { action: "submit" })
@@ -147,7 +249,6 @@ const RECAPTCHA_SITE_KEY = "6LeQYGMsAAAAAKVEO5JD3PLKai_LUGUJZv0eP2mo";
                         document.getElementById("recaptchaResponse").value =
                             token;
 
-                        // Submit form
                         fetch(form.action, {
                             method: "POST",
                             body: new FormData(form),
@@ -156,7 +257,7 @@ const RECAPTCHA_SITE_KEY = "6LeQYGMsAAAAAKVEO5JD3PLKai_LUGUJZv0eP2mo";
                             .then((data) => {
                                 if (data.success) {
                                     formStatus.textContent =
-                                        "Message sent successfully!";
+                                        "Message sent successfully! ✓";
                                     formStatus.className =
                                         "form-status success";
                                     form.reset();
@@ -182,98 +283,255 @@ const RECAPTCHA_SITE_KEY = "6LeQYGMsAAAAAKVEO5JD3PLKai_LUGUJZv0eP2mo";
 
 <style>
     .contact-section {
-        padding: 5rem 2rem;
-        background: var(--bg-secondary);
-    }
-
-    .contact-container {
-        max-width: 600px;
-        margin: 0 auto;
-        text-align: center;
-    }
-
-    .contact-container h2 {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
+        padding: 6rem 2rem;
         background: linear-gradient(
-            135deg,
-            var(--accent-primary),
-            var(--accent-secondary)
+            180deg,
+            var(--bg-primary) 0%,
+            var(--bg-secondary) 100%
         );
+        position: relative;
+        overflow: hidden;
+    }
+
+    .contact-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            var(--color-accent),
+            transparent
+        );
+    }
+
+    .contact-wrapper {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        gap: 4rem;
+        align-items: start;
+    }
+
+    .contact-info {
+        position: sticky;
+        top: 2rem;
+    }
+
+    .info-content {
+        padding: 2rem;
+    }
+
+    .info-label {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--color-accent);
+        background: var(--color-accent-subtle);
+        border-radius: 100px;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .contact-info h2 {
+        font-size: 2.75rem;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, var(--color-accent), #818cf8);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
+        line-height: 1.2;
     }
 
     .contact-subtitle {
-        color: var(--text-secondary);
-        margin-bottom: 2rem;
+        color: var(--color-text-muted);
+        margin-bottom: 2.5rem;
         font-size: 1.1rem;
+        line-height: 1.7;
+    }
+
+    .contact-details {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .contact-icon {
+        font-size: 1.5rem;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-secondary);
+        border-radius: 12px;
+        flex-shrink: 0;
+    }
+
+    .contact-item div {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .contact-label {
+        font-size: 0.85rem;
+        color: var(--color-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .contact-item a,
+    .contact-item span:last-child {
+        color: var(--color-text);
+        font-weight: 500;
+        font-size: 1rem;
+    }
+
+    .contact-item a:hover {
+        color: var(--color-accent);
+    }
+
+    .social-links {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .social-link {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-secondary);
+        border-radius: 12px;
+        color: var(--color-text-muted);
+        transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+        background: var(--color-accent);
+        color: white;
+        transform: translateY(-3px);
+    }
+
+    .contact-form-wrapper {
+        background: var(--bg-secondary);
+        border-radius: 24px;
+        padding: 2.5rem;
+        border: 1px solid var(--color-border);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     }
 
     .contact-form {
-        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
     }
 
     .form-group {
-        margin-bottom: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
     }
 
     .form-group label {
-        display: block;
-        margin-bottom: 0.5rem;
         font-weight: 500;
-        color: var(--text-primary);
+        color: var(--color-text);
+        font-size: 0.95rem;
     }
 
     .form-group input,
     .form-group textarea {
         width: 100%;
-        padding: 1rem;
-        border: 2px solid var(--border-color);
-        border-radius: 8px;
+        padding: 1rem 1.25rem;
+        border: 2px solid var(--color-border);
+        border-radius: 12px;
         background: var(--bg-primary);
-        color: var(--text-primary);
+        color: var(--color-text);
         font-size: 1rem;
-        transition:
-            border-color 0.3s ease,
-            box-shadow 0.3s ease;
+        transition: all 0.3s ease;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+        color: var(--color-text-muted);
+        opacity: 0.6;
     }
 
     .form-group input:focus,
     .form-group textarea:focus {
         outline: none;
-        border-color: var(--accent-primary);
-        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        border-color: var(--color-accent);
+        box-shadow: 0 0 0 4px var(--color-accent-subtle);
     }
 
     .form-group textarea {
         resize: vertical;
-        min-height: 120px;
+        min-height: 150px;
     }
 
     .submit-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
         width: 100%;
-        padding: 1rem 2rem;
-        background: linear-gradient(
-            135deg,
-            var(--accent-primary),
-            var(--accent-secondary)
-        );
+        padding: 1.25rem 2rem;
+        background: linear-gradient(135deg, var(--color-accent), #818cf8);
         color: white;
         border: none;
-        border-radius: 8px;
+        border-radius: 12px;
         font-size: 1.1rem;
         font-weight: 600;
         cursor: pointer;
-        transition:
-            transform 0.3s ease,
-            box-shadow 0.3s ease;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .submit-btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent
+        );
+        transition: left 0.5s ease;
+    }
+
+    .submit-btn:hover::before {
+        left: 100%;
     }
 
     .submit-btn:hover:not(:disabled) {
         transform: translateY(-2px);
-        box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);
+        box-shadow: 0 15px 35px rgba(99, 102, 241, 0.4);
     }
 
     .submit-btn:disabled {
@@ -281,30 +539,68 @@ const RECAPTCHA_SITE_KEY = "6LeQYGMsAAAAAKVEO5JD3PLKai_LUGUJZv0eP2mo";
         cursor: not-allowed;
     }
 
+    .btn-arrow {
+        transition: transform 0.3s ease;
+    }
+
+    .submit-btn:hover .btn-arrow {
+        transform: translateX(4px);
+    }
+
     .form-status {
-        margin-top: 1rem;
         padding: 1rem;
-        border-radius: 8px;
+        border-radius: 12px;
         text-align: center;
         display: none;
+        font-weight: 500;
     }
 
     .form-status.success {
         display: block;
         background: rgba(16, 185, 129, 0.1);
         color: #10b981;
-        border: 1px solid #10b981;
+        border: 1px solid rgba(16, 185, 129, 0.3);
     }
 
     .form-status.error {
         display: block;
         background: rgba(239, 68, 68, 0.1);
         color: #ef4444;
-        border: 1px solid #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.3);
     }
 
-    /* reCAPTCHA badge - move to bottom left */
+    .form-privacy {
+        text-align: center;
+        font-size: 0.85rem;
+        color: var(--color-text-muted);
+        margin-top: 0.5rem;
+    }
+
     :global(.grecaptcha-badge) {
         visibility: hidden;
+    }
+
+    @media (max-width: 900px) {
+        .contact-wrapper {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .contact-info {
+            position: relative;
+            top: 0;
+        }
+
+        .contact-info h2 {
+            font-size: 2rem;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .contact-form-wrapper {
+            padding: 1.5rem;
+        }
     }
 </style>
