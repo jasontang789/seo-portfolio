@@ -139,6 +139,10 @@
     animation: fade-in-up 0.8s ease-out forwards;
   }
 
+  .animate-pulse-slow {
+    animation: pulse-slow 8s ease-in-out infinite;
+  }
+
   .delay-100 {
     animation-delay: 100ms;
   }
@@ -149,5 +153,9 @@
 
   .delay-300 {
     animation-delay: 300ms;
+  }
+
+  .delay-1000 {
+    animation-delay: 1000ms;
   }
 }
