@@ -7,7 +7,7 @@ export default defineConfig({
     site: 'https://seo-portfolio.pages.dev',
     output: 'static',  // Static build (reliable on Cloudflare)
     build: {
-        inlineStylesheets: 'auto',
+        inlineStylesheets: 'always',
     },
     vite: {
         build: {
