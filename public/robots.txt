@@ -2,12 +2,5 @@
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://your-domain.com/sitemap.xml
-
-# Crawl-delay (optional, respected by some bots)
-Crawl-delay: 1
-
 # Block common bot paths
 Disallow: /api/
-Disallow: /_astro/
