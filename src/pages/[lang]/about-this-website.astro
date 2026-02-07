@@ -56,6 +56,21 @@ const content = {
                     solution:
                         "Achieving a glassmorphism design with rich visual effects usually comes at a performance cost. By using optimized CSS variables and minimal client-side JavaScript, we maintained high Lighthouse scores.",
                 },
+                {
+                    problem: "Scaling Styles",
+                    solution:
+                        "Started with Vanilla CSS for granular control, but adopted Tailwind CSS v4 to enforce a unified design system. This reduced code duplication and improved maintainability while preserving the custom glassmorphism aesthetic.",
+                },
+                {
+                    problem: "Content Architecture",
+                    solution:
+                        "Instead of hardcoded text, we leveraged Sanity CMS to build a structured, headless content backend. This allows for real-time updates and scalable data schemas without needing to redeploy the code.",
+                },
+                {
+                    problem: "Global Delivery",
+                    solution:
+                        "Deployed via Cloudflare Pages to utilize their global edge network. This ensures sub-second load times worldwide and reliable social media card rendering compared to standard serverless functions.",
+                },
             ],
         },
         outcome: {
@@ -95,6 +110,21 @@ const content = {
                     problem: "性能与设计的平衡",
                     solution:
                         "实现具有丰富视觉效果的玻璃拟态设计通常会牺牲性能。通过使用优化的CSS变量和极少的客户端JavaScript，我们保持了高Lighthouse分数。",
+                },
+                {
+                    problem: "样式扩展",
+                    solution:
+                        "最初使用原生 CSS 以获得完全控制，但随后采用 Tailwind CSS v4 以实施统一的设计系统。这在保留自定义玻璃拟态美学的同时，减少了代码重复并提高了可维护性。",
+                },
+                {
+                    problem: "内容架构",
+                    solution:
+                        "我们利用 Sanity CMS 构建结构化的无头内容后端，而不是硬编码文本。这允许实时更新和可扩展的数据架构，而无需重新部署代码。",
+                },
+                {
+                    problem: "全球交付",
+                    solution:
+                        "通过 Cloudflare Pages 部署以利用其全球边缘网络。这确保了全球亚秒级的加载时间，以及相比标准无服务器函数更可靠的社交媒体卡片渲染。",
                 },
             ],
         },
