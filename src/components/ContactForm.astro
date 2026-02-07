@@ -315,12 +315,8 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
 
 <style>
     .contact-section {
-        background: linear-gradient(
-            135deg,
-            rgba(15, 15, 35, 0.95) 0%,
-            rgba(30, 20, 60, 0.95) 50%,
-            rgba(15, 15, 35, 0.95) 100%
-        );
+        background: var(--color-bg-secondary);
+        position: relative;
     }
 
     /* Background overlay with gradient mesh */
@@ -345,6 +341,11 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
                 transparent 70%
             );
         z-index: 0;
+        opacity: 0.6;
+    }
+
+    [data-theme="light"] .contact-section::before {
+        opacity: 0.3;
     }
 
     /* Animated gradient orbs */
