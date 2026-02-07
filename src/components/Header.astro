@@ -35,7 +35,7 @@ const switchLangUrl = currentPath.replace(`/${lang}`, `/${otherLang}`);
 
         <ul
             id="nav-menu"
-            class="fixed top-[72px] left-0 right-0 flex flex-col gap-0 bg-background/95 backdrop-blur-xl border-b border-white/10 p-4 translate-y-[-150%] opacity-0 invisible transition-all duration-300 md:translate-y-0 md:opacity-100 md:visible md:static md:flex-row md:bg-transparent md:border-none md:p-0 md:gap-8 data-[open=true]:translate-y-0 data-[open=true]:opacity-100 data-[open=true]:visible"
+            class="fixed top-[72px] left-0 right-0 flex flex-col gap-0 bg-background/95 backdrop-blur-xl border-b border-white/10 p-4 translate-y-[-150%] opacity-0 invisible transition-all duration-300 md:translate-y-0 md:opacity-100 md:visible md:static md:flex-row md:bg-transparent md:backdrop-blur-none md:border-none md:p-0 md:gap-8 data-[open=true]:translate-y-0 data-[open=true]:opacity-100 data-[open=true]:visible"
         >
             {
                 navItems.map((item) => (
