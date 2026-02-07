@@ -4,17 +4,17 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-    site: 'https://seo-portfolio.ray00ooki.workers.dev',
+    site: 'https://seo-portfolio.pages.dev',
     output: 'static',  // Static build (reliable on Cloudflare)
     build: {
         inlineStylesheets: 'auto',
     },
     vite: {
-      build: {
-          cssMinify: true,
-      },
+        build: {
+            cssMinify: true,
+        },
 
-      plugins: [tailwindcss()],
+        plugins: [tailwindcss()],
     },
     i18n: {
         defaultLocale: 'en',
