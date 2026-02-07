@@ -1,5 +1,12 @@
 ---
-// Footer Component
+import { t, type SupportedLanguage } from "../lib/translate";
+
+interface Props {
+    lang?: SupportedLanguage;
+}
+
+const { lang = "en" } = Astro.props;
+
 const currentYear = new Date().getFullYear();
 
 const socialLinks = [
@@ -13,7 +20,7 @@ const socialLinks = [
     <div class="container">
         <div class="footer-content">
             <div class="footer-brand">
-                <a href="/" class="logo">
+                <a href={`/${lang}`} class="logo">
                     <span class="logo-text"
                         >SEO<span class="logo-accent">Pro</span></span
                     >
@@ -28,9 +35,15 @@ const socialLinks = [
                 <div class="footer-column">
                     <h4>Navigation</h4>
                     <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/about">About Me</a></li>
-                        <li><a href="/blog">Blog</a></li>
+                        <li><a href={`/${lang}`}>{t("home", lang)}</a></li>
+                        <li>
+                            <a href={`/${lang}/about`}>{t("about", lang)}</a>
+                        </li>
+                        <li><a href={`/${lang}/blog`}>{t("blog", lang)}</a></li>
+                        <li>
+                            <a href={`/${lang}/about-this-website`}
+                                >{t("aboutThisWebsite", lang)}</a>
+                        </li>
                     </ul>
                 </div>
 

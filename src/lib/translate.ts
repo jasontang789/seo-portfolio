@@ -105,6 +105,7 @@ export const uiTranslations: Record<SupportedLanguage, Record<string, string>> =
         noPosts: 'No posts yet',
         noPostsDesc: 'Check back soon for SEO insights and case studies!',
         minRead: 'min read',
+        aboutThisWebsite: 'About This Website',
     },
     zh: {
         home: '首页',
@@ -139,6 +140,7 @@ export const uiTranslations: Record<SupportedLanguage, Record<string, string>> =
         noPosts: '暂无文章',
         noPostsDesc: '请稍后再来查看SEO见解和案例研究！',
         minRead: '分钟阅读',
+        aboutThisWebsite: '关于本站',
     },
 };
 

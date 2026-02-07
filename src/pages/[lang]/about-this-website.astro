@@ -1,0 +1,265 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { t, type SupportedLanguage } from "../../lib/translate";
+
+export function getStaticPaths() {
+    return [{ params: { lang: "en" } }, { params: { lang: "zh" } }];
+}
+
+const { lang } = Astro.params as { lang: SupportedLanguage };
+
+const content = {
+    en: {
+        title: "About This Website | The Building Process",
+        description:
+            "A behind-the-scenes look at how this SEO portfolio was built using Astro, Sanity, and AI.",
+        heading: "Building This Website",
+        intro: "This portfolio is more than just a showcase of work; it's a testament to modern web development practices, combining performance, design, and SEO from the ground up.",
+        stack: {
+            title: "The Tech Stack",
+            items: [
+                {
+                    name: "Astro",
+                    desc: "For zero-JavaScript default and extreme performance.",
+                },
+                {
+                    name: "Sanity CMS",
+                    desc: "For structured, headless content management.",
+                },
+                {
+                    name: "Cloudflare Pages",
+                    desc: "For edge deployment and speed.",
+                },
+                {
+                    name: "Gemini AI",
+                    desc: "Powering real-time translation and content generation.",
+                },
+            ],
+        },
+        challenges: {
+            title: "Challenges & Solutions",
+            items: [
+                {
+                    problem: "Bilingual Support",
+                    solution:
+                        "We implemented a custom routing system `/[lang]/...` and integrated Google's Gemini API to assist with translations, ensuring content reaches a wider audience without manual duplication.",
+                },
+                {
+                    problem: "Contact Form Security",
+                    solution:
+                        "Initially exploring custom reCAPTCHA v3, we pivoted to Web3Forms for a robust, serverless solution that handles spam protection natively, keeping the site static and fast.",
+                },
+                {
+                    problem: "Performance vs. Design",
+                    solution:
+                        "Achieving a glassmorphism design with rich visual effects usually comes at a performance cost. By using optimized CSS variables and minimal client-side JavaScript, we maintained high Lighthouse scores.",
+                },
+            ],
+        },
+        outcome: {
+            title: "The Outcome",
+            text: "The result is a lightning-fast, SEO-optimized portfolio that serves as a living case study of the principles I apply to client projects: technical excellence backing great content.",
+        },
+    },
+    zh: {
+        title: "关于本站 | 建站过程",
+        description:
+            "幕后揭秘：如何使用Astro、Sanity和AI构建这个SEO作品集网站。",
+        heading: "关于本站的构建",
+        intro: "这个作品集不仅仅是工作的展示；它是现代Web开发实践的证明，从底层结合了性能、设计和SEO。",
+        stack: {
+            title: "技术栈",
+            items: [
+                { name: "Astro", desc: "实现零JavaScript默认设置和极致性能。" },
+                { name: "Sanity CMS", desc: "用于结构化的无头内容管理。" },
+                { name: "Cloudflare Pages", desc: "实现边缘部署和极速访问。" },
+                { name: "Gemini AI", desc: "支持实时翻译和内容生成。" },
+            ],
+        },
+        challenges: {
+            title: "挑战与解决方案",
+            items: [
+                {
+                    problem: "双语支持",
+                    solution:
+                        "我们实施了自定义路由系统 `/[lang]/...` 并集成了Google Gemini API辅助翻译，确保内容无需手动复制即可覆盖更广泛的受众。",
+                },
+                {
+                    problem: "联系表单安全",
+                    solution:
+                        "最初探索自定义reCAPTCHA v3，后来为了保持网站的静态和快速，我们转向Web3Forms，这是一种强大的无服务器解决方案，原生处理反垃圾邮件。",
+                },
+                {
+                    problem: "性能与设计的平衡",
+                    solution:
+                        "实现具有丰富视觉效果的玻璃拟态设计通常会牺牲性能。通过使用优化的CSS变量和极少的客户端JavaScript，我们保持了高Lighthouse分数。",
+                },
+            ],
+        },
+        outcome: {
+            title: "最终成果",
+            text: "结果是一个极速、SEO优化的作品集，它作为我应用于客户项目的原则的活生生的案例研究：卓越的技术支持优质的内容。",
+        },
+    },
+};
+
+const c = content[lang];
+---
+
+<BaseLayout title={c.title} description={c.description} lang={lang}>
+    <Header lang={lang} />
+
+    <main class="main-content">
+        <section class="page-header">
+            <div class="container">
+                <span class="page-label">{t("aboutThisWebsite", lang)}</span>
+                <h1>{c.heading}</h1>
+                <p class="lead">{c.intro}</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="grid-layout">
+                    <!-- Tech Stack -->
+                    <div class="card stack-card">
+                        <h2>{c.stack.title}</h2>
+                        <ul class="stack-list">
+                            {
+                                c.stack.items.map((item) => (
+                                    <li>
+                                        <strong>{item.name}</strong>
+                                        <p>{item.desc}</p>
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                    </div>
+
+                    <!-- Challenges -->
+                    <div class="challenges-section">
+                        <h2>{c.challenges.title}</h2>
+                        <div class="challenges-grid">
+                            {
+                                c.challenges.items.map((item) => (
+                                    <div class="challenge-item card-glass">
+                                        <h3>{item.problem}</h3>
+                                        <p>{item.solution}</p>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Outcome -->
+                <div class="outcome-section">
+                    <div class="outcome-content">
+                        <h2>{c.outcome.title}</h2>
+                        <p>{c.outcome.text}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <Footer lang={lang} />
+</BaseLayout>
+
+<style>
+    .page-header {
+        padding: var(--space-24) 0 var(--space-12);
+        text-align: center;
+    }
+
+    .page-label {
+        display: inline-block;
+        padding: var(--space-2) var(--space-4);
+        font-size: var(--text-sm);
+        font-weight: var(--font-medium);
+        color: var(--color-accent);
+        background: var(--color-accent-subtle);
+        border-radius: var(--border-radius-full);
+        margin-bottom: var(--space-6);
+    }
+
+    .page-header h1 {
+        font-size: var(--text-5xl);
+        margin-bottom: var(--space-6);
+    }
+
+    .lead {
+        font-size: var(--text-xl);
+        color: var(--color-text-muted);
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+
+    .grid-layout {
+        display: grid;
+        gap: var(--space-12);
+        margin-bottom: var(--space-16);
+    }
+
+    .stack-card {
+        padding: var(--space-8);
+        background: var(--color-surface);
+    }
+
+    .stack-list {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--space-6);
+        margin-top: var(--space-6);
+    }
+
+    .stack-list strong {
+        display: block;
+        color: var(--color-accent);
+        margin-bottom: var(--space-2);
+        font-size: var(--text-lg);
+    }
+
+    .challenges-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: var(--space-6);
+        margin-top: var(--space-6);
+    }
+
+    .challenge-item {
+        padding: var(--space-6);
+    }
+
+    .challenge-item h3 {
+        color: var(--color-text);
+        margin-bottom: var(--space-3);
+    }
+
+    .outcome-section {
+        background: var(--color-accent-subtle);
+        padding: var(--space-12);
+        border-radius: var(--border-radius-xl);
+        text-align: center;
+    }
+
+    .outcome-content {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .outcome-content h2 {
+        margin-bottom: var(--space-4);
+        color: var(--color-accent);
+    }
+
+    .outcome-content p {
+        font-size: var(--text-lg);
+        line-height: 1.8;
+    }
+</style>
