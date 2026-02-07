@@ -1,0 +1,310 @@
+---
+interface Props {
+    lang?: "en" | "zh";
+}
+
+const { lang = "en" } = Astro.props;
+
+const translations = {
+    en: {
+        title: "Get in Touch",
+        subtitle:
+            "Have a project in mind? Let's discuss how I can help grow your organic traffic.",
+        name: "Your Name",
+        email: "Your Email",
+        message: "Your Message",
+        send: "Send Message",
+        sending: "Sending...",
+        success: "Message sent successfully!",
+        error: "Something went wrong. Please try again.",
+    },
+    zh: {
+        title: "联系我",
+        subtitle: "有项目想法？让我们讨论如何帮助您增加自然流量。",
+        name: "您的姓名",
+        email: "您的邮箱",
+        message: "您的留言",
+        send: "发送信息",
+        sending: "发送中...",
+        success: "消息发送成功！",
+        error: "发送失败，请重试。",
+    },
+};
+
+const t = translations[lang];
+const RECAPTCHA_SITE_KEY = "6LeQYGMsAAAAAKVEO5JD3PLKai_LUGUJZv0eP2mo";
+---
+
+<section class="contact-section" id="contact">
+    <div class="contact-container">
+        <h2>{t.title}</h2>
+        <p class="contact-subtitle">{t.subtitle}</p>
+
+        <form
+            id="contact-form"
+            action="https://api.web3forms.com/submit"
+            method="POST"
+            class="contact-form"
+        >
+            <!-- Web3Forms Access Key - Get yours free at web3forms.com -->
+            <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_KEY" />
+            <input
+                type="hidden"
+                name="subject"
+                value="New Contact from SEO Portfolio"
+            />
+            <input
+                type="hidden"
+                name="from_name"
+                value="SEO Portfolio Contact"
+            />
+            <input
+                type="hidden"
+                name="redirect"
+                value="https://seo-portfolio.ray00ooki.workers.dev/en/?success=true"
+            />
+
+            <!-- reCAPTCHA v3 token -->
+            <input
+                type="hidden"
+                name="recaptcha_response"
+                id="recaptchaResponse"
+            />
+
+            <div class="form-group">
+                <label for="name">{t.name}</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    placeholder={t.name}
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="email">{t.email}</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    placeholder={t.email}
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="message">{t.message}</label>
+                <textarea
+                    id="message"
+                    name="message"
+                    rows="5"
+                    required
+                    placeholder={t.message}></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submit-btn">
+                <span class="btn-text">{t.send}</span>
+                <span class="btn-loading" style="display: none;"
+                    >{t.sending}</span
+                >
+            </button>
+
+            <div id="form-status" class="form-status"></div>
+        </form>
+    </div>
+</section>
+
+<!-- reCAPTCHA v3 Script -->
+<script is:inline define:vars={{ RECAPTCHA_SITE_KEY }}>
+    // Load reCAPTCHA v3
+    const script = document.createElement("script");
+    script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
+    script.async = true;
+    document.head.appendChild(script);
+
+    script.onload = function () {
+        const form = document.getElementById("contact-form");
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById("submit-btn");
+            const btnText = submitBtn.querySelector(".btn-text");
+            const btnLoading = submitBtn.querySelector(".btn-loading");
+            const formStatus = document.getElementById("form-status");
+
+            // Show loading state
+            btnText.style.display = "none";
+            btnLoading.style.display = "inline";
+            submitBtn.disabled = true;
+
+            // Get reCAPTCHA token
+            grecaptcha.ready(function () {
+                grecaptcha
+                    .execute(RECAPTCHA_SITE_KEY, { action: "submit" })
+                    .then(function (token) {
+                        document.getElementById("recaptchaResponse").value =
+                            token;
+
+                        // Submit form
+                        fetch(form.action, {
+                            method: "POST",
+                            body: new FormData(form),
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+                                if (data.success) {
+                                    formStatus.textContent =
+                                        "Message sent successfully!";
+                                    formStatus.className =
+                                        "form-status success";
+                                    form.reset();
+                                } else {
+                                    throw new Error("Form submission failed");
+                                }
+                            })
+                            .catch((error) => {
+                                formStatus.textContent =
+                                    "Something went wrong. Please try again.";
+                                formStatus.className = "form-status error";
+                            })
+                            .finally(() => {
+                                btnText.style.display = "inline";
+                                btnLoading.style.display = "none";
+                                submitBtn.disabled = false;
+                            });
+                    });
+            });
+        });
+    };
+</script>
+
+<style>
+    .contact-section {
+        padding: 5rem 2rem;
+        background: var(--bg-secondary);
+    }
+
+    .contact-container {
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .contact-container h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        background: linear-gradient(
+            135deg,
+            var(--accent-primary),
+            var(--accent-secondary)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .contact-subtitle {
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+    }
+
+    .contact-form {
+        text-align: left;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--text-primary);
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 1rem;
+        border: 2px solid var(--border-color);
+        border-radius: 8px;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        font-size: 1rem;
+        transition:
+            border-color 0.3s ease,
+            box-shadow 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--accent-primary);
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 1rem 2rem;
+        background: linear-gradient(
+            135deg,
+            var(--accent-primary),
+            var(--accent-secondary)
+        );
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+            transform 0.3s ease,
+            box-shadow 0.3s ease;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);
+    }
+
+    .submit-btn:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    .form-status {
+        margin-top: 1rem;
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+        display: none;
+    }
+
+    .form-status.success {
+        display: block;
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+        border: 1px solid #10b981;
+    }
+
+    .form-status.error {
+        display: block;
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        border: 1px solid #ef4444;
+    }
+
+    /* reCAPTCHA badge - move to bottom left */
+    :global(.grecaptcha-badge) {
+        visibility: hidden;
+    }
+</style>
