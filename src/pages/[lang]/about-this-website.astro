@@ -175,11 +175,65 @@ const c = content[lang];
 
                 <!-- Outcome -->
                 <div class="bg-primary/10 p-12 rounded-xl text-center">
-                    <div class="max-w-3xl mx-auto">
-                        <h2 class="text-3xl font-bold mb-4 text-primary">
+                    <div class="max-w-4xl mx-auto">
+                        <h2 class="text-3xl font-bold mb-8 text-primary">
                             {c.outcome.title}
                         </h2>
-                        <p class="text-lg leading-relaxed">{c.outcome.text}</p>
+                        <p class="text-lg leading-relaxed mb-12">
+                            {c.outcome.text}
+                        </p>
+
+                        <div class="grid md:grid-cols-2 gap-8 items-start">
+                            <div class="space-y-4">
+                                <div
+                                    class="relative group rounded-xl overflow-hidden border border-white/10 bg-surface/50"
+                                >
+                                    <div
+                                        class="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors"
+                                    >
+                                    </div>
+                                    <img
+                                        src="/images/about-website/lighthouse-mobile.png"
+                                        alt="Mobile Lighthouse Performance Score: 92 Performance, 94 Accessibility, 96 Best Practices, 100 SEO"
+                                        class="w-full h-auto relative z-10"
+                                    />
+                                </div>
+                                <p
+                                    class="text-sm text-text-muted font-medium uppercase tracking-wider"
+                                >
+                                    {
+                                        lang === "zh"
+                                            ? "移动端结果"
+                                            : "Mobile Result"
+                                    }
+                                </p>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div
+                                    class="relative group rounded-xl overflow-hidden border border-white/10 bg-surface/50"
+                                >
+                                    <div
+                                        class="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors"
+                                    >
+                                    </div>
+                                    <img
+                                        src="/images/about-website/lighthouse-desktop.png"
+                                        alt="Desktop Lighthouse Performance Score: 99 Performance, 94 Accessibility, 96 Best Practices, 100 SEO"
+                                        class="w-full h-auto relative z-10"
+                                    />
+                                </div>
+                                <p
+                                    class="text-sm text-text-muted font-medium uppercase tracking-wider"
+                                >
+                                    {
+                                        lang === "zh"
+                                            ? "桌面端结果"
+                                            : "Desktop Result"
+                                    }
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
