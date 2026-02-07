@@ -1,11 +1,9 @@
 import { defineConfig } from 'astro/config';
-import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
     site: 'https://seo-portfolio.ray00ooki.workers.dev',
-    output: 'server',  // SSR enabled
-    adapter: cloudflare(),
+    output: 'static',  // Static build (reliable on Cloudflare)
     build: {
         inlineStylesheets: 'auto',
     },
