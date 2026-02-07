@@ -36,45 +36,59 @@ const RECAPTCHA_SITE_KEY = "6LeQYGMsAAAAAKVEO5JD3PLKai_LUGUJZv0eP2mo";
 const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
 ---
 
-<section class="contact-section" id="contact">
-    <div class="contact-wrapper">
-        <div class="contact-info">
-            <div class="info-content">
-                <span class="info-label"
+<section class="py-24 relative overflow-hidden contact-section" id="contact">
+    <div
+        class="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-16 items-start relative z-10 px-8"
+    >
+        <div class="sticky top-8">
+            <div class="p-8">
+                <span
+                    class="inline-block px-4 py-2 text-sm font-semibold text-primary bg-primary/10 rounded-full mb-6 uppercase tracking-wider"
                     >{lang === "zh" ? "联系方式" : "Contact Info"}</span
                 >
-                <h2>{t.title}</h2>
-                <p class="contact-subtitle">{t.subtitle}</p>
+                <h2
+                    class="text-4xl md:text-5xl mb-4 font-bold bg-gradient-to-br from-primary to-indigo-400 bg-clip-text text-transparent leading-tight"
+                >
+                    {t.title}
+                </h2>
+                <p class="text-text-muted mb-10 text-lg leading-relaxed">
+                    {t.subtitle}
+                </p>
 
-                <div class="contact-details">
-                    <div class="contact-item">
+                <div class="flex flex-col gap-6 mb-10">
+                    <div class="flex items-start gap-4 pl-2">
                         <div>
-                            <span class="contact-label"
+                            <span
+                                class="text-sm text-text-muted uppercase tracking-wider block mb-1"
                                 >{lang === "zh" ? "邮箱" : "Email"}</span
                             >
-                            <a href="mailto:ray00ooki@gmail.com"
+                            <a
+                                href="mailto:ray00ooki@gmail.com"
+                                class="text-text font-medium text-base hover:text-primary transition-colors"
                                 >ray00ooki@gmail.com</a
                             >
                         </div>
                     </div>
-                    <div class="contact-item">
+                    <div class="flex items-start gap-4 pl-2">
                         <div>
-                            <span class="contact-label"
+                            <span
+                                class="text-sm text-text-muted uppercase tracking-wider block mb-1"
                                 >{lang === "zh" ? "地点" : "Location"}</span
                             >
-                            <span
+                            <span class="text-text font-medium text-base"
                                 >{lang === "zh" ? "马来西亚" : "Malaysia"}</span
                             >
                         </div>
                     </div>
-                    <div class="contact-item">
+                    <div class="flex items-start gap-4 pl-2">
                         <div>
-                            <span class="contact-label"
+                            <span
+                                class="text-sm text-text-muted uppercase tracking-wider block mb-1"
                                 >{
                                     lang === "zh" ? "响应时间" : "Response Time"
                                 }</span
                             >
-                            <span
+                            <span class="text-text font-medium text-base"
                                 >{
                                     lang === "zh"
                                         ? "24小时内"
@@ -85,8 +99,12 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
                     </div>
                 </div>
 
-                <div class="social-links">
-                    <a href="#" class="social-link" aria-label="LinkedIn">
+                <div class="flex gap-4">
+                    <a
+                        href="#"
+                        class="w-11 h-11 flex items-center justify-center bg-surface border border-border rounded-xl text-text-muted transition-all hover:bg-primary hover:text-white hover:-translate-y-1"
+                        aria-label="LinkedIn"
+                    >
                         <svg
                             width="20"
                             height="20"
@@ -97,7 +115,11 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
                             ></path></svg
                         >
                     </a>
-                    <a href="#" class="social-link" aria-label="Twitter">
+                    <a
+                        href="#"
+                        class="w-11 h-11 flex items-center justify-center bg-surface border border-border rounded-xl text-text-muted transition-all hover:bg-primary hover:text-white hover:-translate-y-1"
+                        aria-label="Twitter"
+                    >
                         <svg
                             width="20"
                             height="20"
@@ -108,7 +130,11 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
                             ></path></svg
                         >
                     </a>
-                    <a href="#" class="social-link" aria-label="GitHub">
+                    <a
+                        href="#"
+                        class="w-11 h-11 flex items-center justify-center bg-surface border border-border rounded-xl text-text-muted transition-all hover:bg-primary hover:text-white hover:-translate-y-1"
+                        aria-label="GitHub"
+                    >
                         <svg
                             width="20"
                             height="20"
@@ -123,12 +149,14 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
             </div>
         </div>
 
-        <div class="contact-form-wrapper">
+        <div
+            class="bg-surface rounded-3xl p-8 md:p-10 border border-border shadow-2xl"
+        >
             <form
                 id="contact-form"
                 action="https://api.web3forms.com/submit"
                 method="POST"
-                class="contact-form"
+                class="flex flex-col gap-6"
             >
                 <input type="hidden" name="access_key" value={WEB3FORMS_KEY} />
                 <input
@@ -147,50 +175,68 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
                     value={`https://seo-portfolio.ray00ooki.workers.dev/${lang}/?success=true`}
                 />
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="name">{t.name}</label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col gap-2">
+                        <label for="name" class="font-medium text-text text-sm"
+                            >{t.name}</label
+                        >
                         <input
                             type="text"
                             id="name"
                             name="name"
                             required
                             placeholder={t.name}
+                            class="w-full px-5 py-4 border-2 border-border rounded-xl bg-background text-text text-base transition-all placeholder:text-text-muted/60 focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10"
                         />
                     </div>
 
-                    <div class="form-group">
-                        <label for="email">{t.email}</label>
+                    <div class="flex flex-col gap-2">
+                        <label for="email" class="font-medium text-text text-sm"
+                            >{t.email}</label
+                        >
                         <input
                             type="email"
                             id="email"
                             name="email"
                             required
                             placeholder={t.email}
+                            class="w-full px-5 py-4 border-2 border-border rounded-xl bg-background text-text text-base transition-all placeholder:text-text-muted/60 focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10"
                         />
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="message">{t.message}</label>
+                <div class="flex flex-col gap-2">
+                    <label for="message" class="font-medium text-text text-sm"
+                        >{t.message}</label
+                    >
                     <textarea
                         id="message"
                         name="message"
                         rows="6"
                         required
-                        placeholder={t.message}></textarea>
+                        placeholder={t.message}
+                        class="w-full px-5 py-4 border-2 border-border rounded-xl bg-background text-text text-base transition-all placeholder:text-text-muted/60 focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 resize-y min-h-[150px]"
+                    ></textarea>
                 </div>
 
-                <button type="submit" class="submit-btn" id="submit-btn">
+                <button
+                    type="submit"
+                    class="submit-btn group flex items-center justify-center gap-3 w-full py-5 bg-gradient-to-br from-primary to-indigo-400 text-white border-0 rounded-xl text-lg font-semibold cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed relative overflow-hidden"
+                    id="submit-btn"
+                >
                     <span class="btn-text">{t.send}</span>
                     <span class="btn-loading" style="display: none;"
                         >{t.sending}</span
                     >
                 </button>
 
-                <div id="form-status" class="form-status"></div>
+                <div
+                    id="form-status"
+                    class="hidden p-4 rounded-xl text-center font-medium mt-4"
+                >
+                </div>
 
-                <p class="form-privacy">
+                <p class="text-center text-sm text-text-muted mt-2">
                     {
                         lang === "zh"
                             ? "🔒 您的信息是安全的，我们不会分享给第三方。"
@@ -220,7 +266,8 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
             btnText.style.display = "none";
             btnLoading.style.display = "inline";
             submitBtn.disabled = true;
-            formStatus.className = "form-status";
+            formStatus.className =
+                "hidden p-4 rounded-xl text-center font-medium mt-4";
             formStatus.textContent = "";
 
             try {
@@ -236,18 +283,21 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
 
                 if (data.success) {
                     formStatus.textContent = "Message sent successfully! ✓";
-                    formStatus.className = "form-status success";
+                    formStatus.className =
+                        "block p-4 rounded-xl text-center font-medium mt-4 bg-green-500/10 text-green-500 border border-green-500/30";
                     form.reset();
                 } else {
                     formStatus.textContent =
                         data.message || "Submission failed. Please try again.";
-                    formStatus.className = "form-status error";
+                    formStatus.className =
+                        "block p-4 rounded-xl text-center font-medium mt-4 bg-red-500/10 text-red-500 border border-red-500/30";
                 }
             } catch (error) {
                 console.error("Form error:", error);
                 formStatus.textContent =
                     "Network error. Please check your connection.";
-                formStatus.className = "form-status error";
+                formStatus.className =
+                    "block p-4 rounded-xl text-center font-medium mt-4 bg-red-500/10 text-red-500 border border-red-500/30";
             } finally {
                 btnText.style.display = "inline";
                 btnLoading.style.display = "none";
@@ -259,9 +309,6 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
 
 <style>
     .contact-section {
-        padding: 6rem 2rem;
-        position: relative;
-        overflow: hidden;
         background: linear-gradient(
             135deg,
             rgba(15, 15, 35, 0.95) 0%,
@@ -323,37 +370,8 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
         }
     }
 
-    /* Secondary orb */
-    .contact-wrapper::before {
-        content: "";
-        position: absolute;
-        bottom: 10%;
-        right: 5%;
-        width: 250px;
-        height: 250px;
-        background: radial-gradient(
-            circle,
-            rgba(139, 92, 246, 0.25) 0%,
-            transparent 70%
-        );
-        border-radius: 50%;
-        filter: blur(50px);
-        animation: floatOrb2 10s ease-in-out infinite;
-        z-index: 0;
-    }
-
-    @keyframes floatOrb2 {
-        0%,
-        100% {
-            transform: translate(0, 0) scale(1);
-        }
-        50% {
-            transform: translate(-20px, 20px) scale(1.15);
-        }
-    }
-
     /* Grid pattern overlay */
-    .contact-wrapper::after {
+    .contact-section > div::after {
         content: "";
         position: absolute;
         inset: 0;
@@ -369,290 +387,7 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
         pointer-events: none;
     }
 
-    .contact-wrapper {
-        max-width: 1100px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: 1fr 1.2fr;
-        gap: 4rem;
-        align-items: start;
-        position: relative;
-        z-index: 1;
-    }
-
-    .contact-info {
-        position: sticky;
-        top: 2rem;
-    }
-
-    .info-content {
-        padding: 2rem;
-    }
-
-    .info-label {
-        display: inline-block;
-        padding: 0.5rem 1rem;
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: var(--color-accent);
-        background: var(--color-accent-subtle);
-        border-radius: 100px;
-        margin-bottom: 1.5rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-
-    .contact-info h2 {
-        font-size: 2.75rem;
-        margin-bottom: 1rem;
-        background: linear-gradient(135deg, var(--color-accent), #818cf8);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        line-height: 1.2;
-    }
-
-    .contact-subtitle {
-        color: var(--color-text-muted);
-        margin-bottom: 2.5rem;
-        font-size: 1.1rem;
-        line-height: 1.7;
-    }
-
-    .contact-details {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        margin-bottom: 2.5rem;
-    }
-
-    .contact-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 1rem;
-        padding-left: 0.5rem;
-    }
-
-    .contact-item div {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-    }
-
-    .contact-label {
-        font-size: 0.85rem;
-        color: var(--color-text-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-
-    .contact-item a,
-    .contact-item span:last-child {
-        color: var(--color-text);
-        font-weight: 500;
-        font-size: 1rem;
-    }
-
-    .contact-item a:hover {
-        color: var(--color-accent);
-    }
-
-    .social-links {
-        display: flex;
-        gap: 1rem;
-    }
-
-    .social-link {
-        width: 44px;
-        height: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: var(--bg-secondary);
-        border-radius: 12px;
-        color: var(--color-text-muted);
-        transition: all 0.3s ease;
-    }
-
-    .social-link:hover {
-        background: var(--color-accent);
-        color: white;
-        transform: translateY(-3px);
-    }
-
-    .contact-form-wrapper {
-        background: var(--bg-secondary);
-        border-radius: 24px;
-        padding: 2.5rem;
-        border: 1px solid var(--color-border);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    }
-
-    .contact-form {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-
-    .form-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
-    }
-
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .form-group label {
-        font-weight: 500;
-        color: var(--color-text);
-        font-size: 0.95rem;
-    }
-
-    .form-group input,
-    .form-group textarea {
-        width: 100%;
-        padding: 1rem 1.25rem;
-        border: 2px solid var(--color-border);
-        border-radius: 12px;
-        background: var(--bg-primary);
-        color: var(--color-text);
-        font-size: 1rem;
-        transition: all 0.3s ease;
-    }
-
-    .form-group input::placeholder,
-    .form-group textarea::placeholder {
-        color: var(--color-text-muted);
-        opacity: 0.6;
-    }
-
-    .form-group input:focus,
-    .form-group textarea:focus {
-        outline: none;
-        border-color: var(--color-accent);
-        box-shadow: 0 0 0 4px var(--color-accent-subtle);
-    }
-
-    .form-group textarea {
-        resize: vertical;
-        min-height: 150px;
-    }
-
-    .submit-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.75rem;
-        width: 100%;
-        padding: 1.25rem 2rem;
-        background: linear-gradient(135deg, var(--color-accent), #818cf8);
-        color: white;
-        border: none;
-        border-radius: 12px;
-        font-size: 1.1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .submit-btn::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.2),
-            transparent
-        );
-        transition: left 0.5s ease;
-    }
-
-    .submit-btn:hover::before {
-        left: 100%;
-    }
-
-    .submit-btn:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 15px 35px rgba(99, 102, 241, 0.4);
-    }
-
-    .submit-btn:disabled {
-        opacity: 0.7;
-        cursor: not-allowed;
-    }
-
-    .btn-arrow {
-        transition: transform 0.3s ease;
-    }
-
-    .submit-btn:hover .btn-arrow {
-        transform: translateX(4px);
-    }
-
-    .form-status {
-        padding: 1rem;
-        border-radius: 12px;
-        text-align: center;
-        display: none;
-        font-weight: 500;
-    }
-
-    .form-status.success {
-        display: block;
-        background: rgba(16, 185, 129, 0.1);
-        color: #10b981;
-        border: 1px solid rgba(16, 185, 129, 0.3);
-    }
-
-    .form-status.error {
-        display: block;
-        background: rgba(239, 68, 68, 0.1);
-        color: #ef4444;
-        border: 1px solid rgba(239, 68, 68, 0.3);
-    }
-
-    .form-privacy {
-        text-align: center;
-        font-size: 0.85rem;
-        color: var(--color-text-muted);
-        margin-top: 0.5rem;
-    }
-
     :global(.grecaptcha-badge) {
         visibility: hidden;
-    }
-
-    @media (max-width: 900px) {
-        .contact-wrapper {
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        .contact-info {
-            position: relative;
-            top: 0;
-        }
-
-        .contact-info h2 {
-            font-size: 2rem;
-        }
-
-        .form-row {
-            grid-template-columns: 1fr;
-        }
-
-        .contact-form-wrapper {
-            padding: 1.5rem;
-        }
     }
 </style>

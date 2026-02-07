@@ -47,26 +47,37 @@ const c = content[lang];
     <Header lang={lang} />
 
     <main>
-        <section class="about-header">
+        <section class="py-24 text-center">
             <div class="container">
-                <span class="page-label">{c.subheading}</span>
-                <h1>{c.heading}</h1>
+                <span
+                    class="inline-block px-4 py-2 text-sm font-medium text-primary bg-primary/10 rounded-full mb-6"
+                    >{c.subheading}</span
+                >
+                <h1 class="text-5xl font-bold mb-8">{c.heading}</h1>
             </div>
         </section>
 
-        <section class="about-content section">
-            <div class="container container-content">
-                <div class="about-intro">
-                    <p class="lead">{c.intro}</p>
+        <section class="py-12">
+            <div class="container max-w-3xl">
+                <div class="mb-12">
+                    <p class="text-xl leading-relaxed text-text-muted">
+                        {c.intro}
+                    </p>
                 </div>
 
-                <div class="skills-section">
-                    <h2>{lang === "zh" ? "我的专长" : "My Expertise"}</h2>
-                    <div class="skills-grid">
+                <div class="mb-12">
+                    <h2 class="text-3xl font-bold mb-6">
+                        {lang === "zh" ? "我的专长" : "My Expertise"}
+                    </h2>
+                    <div
+                        class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4"
+                    >
                         {
                             c.skills.map((skill) => (
-                                <div class="skill-item card">
-                                    <span class="skill-icon">✓</span>
+                                <div class="card flex items-center gap-3 p-4">
+                                    <span class="text-primary font-bold">
+                                        ✓
+                                    </span>
                                     <span>{skill}</span>
                                 </div>
                             ))
@@ -74,11 +85,11 @@ const c = content[lang];
                     </div>
                 </div>
 
-                <div class="experience-section">
+                <div class="mb-12 text-lg leading-relaxed text-text-muted">
                     <p>{c.experience}</p>
                 </div>
 
-                <div class="cta-section">
+                <div class="text-center">
                     <a
                         href="https://wa.me/60142836036"
                         target="_blank"
@@ -94,72 +105,3 @@ const c = content[lang];
 
     <Footer lang={lang} />
 </BaseLayout>
-
-<style>
-    .about-header {
-        padding: var(--space-24) 0 var(--space-12);
-        text-align: center;
-    }
-
-    .page-label {
-        display: inline-block;
-        padding: var(--space-2) var(--space-4);
-        font-size: var(--text-sm);
-        font-weight: var(--font-medium);
-        color: var(--color-accent);
-        background: var(--color-accent-subtle);
-        border-radius: var(--border-radius-full);
-        margin-bottom: var(--space-6);
-    }
-
-    .about-header h1 {
-        font-size: var(--text-5xl);
-    }
-
-    .about-intro {
-        margin-bottom: var(--space-12);
-    }
-
-    .lead {
-        font-size: var(--text-xl);
-        line-height: 1.8;
-        color: var(--color-text-muted);
-    }
-
-    .skills-section {
-        margin-bottom: var(--space-12);
-    }
-
-    .skills-section h2 {
-        margin-bottom: var(--space-6);
-    }
-
-    .skills-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: var(--space-4);
-    }
-
-    .skill-item {
-        display: flex;
-        align-items: center;
-        gap: var(--space-3);
-        padding: var(--space-4);
-    }
-
-    .skill-icon {
-        color: var(--color-accent);
-        font-weight: bold;
-    }
-
-    .experience-section {
-        margin-bottom: var(--space-12);
-        font-size: var(--text-lg);
-        line-height: 1.8;
-        color: var(--color-text-muted);
-    }
-
-    .cta-section {
-        text-align: center;
-    }
-</style>

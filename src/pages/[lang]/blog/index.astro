@@ -56,18 +56,23 @@ if (lang === "zh" && categories.length > 0) {
 <BaseLayout title={pageTitle} description={pageDescription} lang={lang}>
     <Header lang={lang} />
 
-    <main>
+    <main class="min-h-screen">
         <!-- Blog Header -->
-        <section class="blog-header">
+        <section class="py-24 text-center">
             <div class="container">
-                <span class="page-label">{t("blog", lang)}</span>
-                <h1>
+                <span
+                    class="inline-block px-4 py-2 text-sm font-medium text-primary bg-primary/10 rounded-full mb-6"
+                    >{t("blog", lang)}</span
+                >
+                <h1 class="text-5xl font-bold mb-4">
                     {lang === "zh" ? "SEO见解与" : "SEO Insights &"}
                     <span class="text-gradient"
                         >{lang === "zh" ? "案例研究" : "Case Studies"}</span
                     >
                 </h1>
-                <p class="page-description">
+                <p
+                    class="text-xl text-text-muted max-w-2xl mx-auto leading-relaxed"
+                >
                     {
                         lang === "zh"
                             ? "实用的SEO策略、真实案例研究和行业分析，帮助您提升自然搜索排名。"
@@ -80,18 +85,18 @@ if (lang === "zh" && categories.length > 0) {
         <!-- Categories Filter -->
         {
             displayCategories.length > 0 && (
-                <section class="categories">
+                <section class="py-6 border-y border-border bg-surface">
                     <div class="container">
-                        <div class="category-filter">
+                        <div class="flex flex-wrap justify-center gap-3">
                             <button
-                                class="category-btn active"
+                                class="px-4 py-2 text-sm font-medium rounded-full border transition-colors cursor-pointer text-primary border-primary bg-primary/10"
                                 data-category="all"
                             >
                                 {t("allPosts", lang)}
                             </button>
                             {displayCategories.map((category: any) => (
                                 <button
-                                    class="category-btn"
+                                    class="px-4 py-2 text-sm font-medium rounded-full border border-border bg-transparent text-text-muted transition-colors cursor-pointer hover:text-primary hover:border-primary hover:bg-primary/10"
                                     data-category={category.slug}
                                 >
                                     {category.title}
@@ -104,11 +109,11 @@ if (lang === "zh" && categories.length > 0) {
         }
 
         <!-- Blog Grid -->
-        <section class="section blog-grid-section">
+        <section class="py-20">
             <div class="container">
                 {
                     displayPosts.length > 0 ? (
-                        <div class="blog-grid">
+                        <div class="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-8">
                             {displayPosts.map((post: Post) => (
                                 <BlogCard
                                     title={post.title}
@@ -129,8 +134,10 @@ if (lang === "zh" && categories.length > 0) {
                             ))}
                         </div>
                     ) : (
-                        <div class="empty-state">
-                            <h3>{t("noPosts", lang)}</h3>
+                        <div class="text-center py-24 bg-surface rounded-xl border border-dashed border-border text-text-muted">
+                            <h3 class="text-2xl font-bold mb-4 text-text">
+                                {t("noPosts", lang)}
+                            </h3>
                             <p>{t("noPostsDesc", lang)}</p>
                         </div>
                     )
@@ -141,90 +148,3 @@ if (lang === "zh" && categories.length > 0) {
 
     <Footer lang={lang} />
 </BaseLayout>
-
-<style>
-    /* Blog Header */
-    .blog-header {
-        padding: var(--space-24) 0 var(--space-12);
-        text-align: center;
-    }
-
-    .page-label {
-        display: inline-block;
-        padding: var(--space-2) var(--space-4);
-        font-size: var(--text-sm);
-        font-weight: var(--font-medium);
-        color: var(--color-accent);
-        background: var(--color-accent-subtle);
-        border-radius: var(--border-radius-full);
-        margin-bottom: var(--space-6);
-    }
-
-    .blog-header h1 {
-        font-size: var(--text-5xl);
-        margin-bottom: var(--space-4);
-    }
-
-    .page-description {
-        font-size: var(--text-lg);
-        color: var(--color-text-muted);
-        max-width: 600px;
-        margin: 0 auto;
-        line-height: 1.7;
-    }
-
-    /* Categories */
-    .categories {
-        padding: var(--space-6) 0;
-        border-bottom: 1px solid var(--color-border);
-    }
-
-    .category-filter {
-        display: flex;
-        gap: var(--space-3);
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .category-btn {
-        padding: var(--space-2) var(--space-4);
-        font-size: var(--text-sm);
-        font-weight: var(--font-medium);
-        color: var(--color-text-muted);
-        background: transparent;
-        border: 1px solid var(--color-border);
-        border-radius: var(--border-radius-full);
-        cursor: pointer;
-        transition: all var(--transition-base);
-    }
-
-    .category-btn:hover,
-    .category-btn.active {
-        color: var(--color-accent);
-        border-color: var(--color-accent);
-        background: var(--color-accent-subtle);
-    }
-
-    /* Blog Grid */
-    .blog-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: var(--space-8);
-    }
-
-    /* Empty State */
-    .empty-state {
-        text-align: center;
-        padding: var(--space-16) 0;
-    }
-
-    .empty-state h3 {
-        font-size: var(--text-2xl);
-        margin-bottom: var(--space-4);
-        color: var(--color-text);
-    }
-
-    .empty-state p {
-        color: var(--color-text-muted);
-    }
-</style>

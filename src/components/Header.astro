@@ -22,24 +22,30 @@ const otherLang = lang === "en" ? "zh" : "en";
 const switchLangUrl = currentPath.replace(`/${lang}`, `/${otherLang}`);
 ---
 
-<header class="header">
-    <nav class="nav container">
-        <a href={`/${lang}`} class="logo">
-            <span class="logo-text"
-                >SEO<span class="logo-accent">Pro</span></span
+<header class="sticky top-0 z-50 glass transition-all border-b border-white/10">
+    <nav class="container flex items-center justify-between h-[72px]">
+        <a
+            href={`/${lang}`}
+            class="font-heading text-xl font-bold text-text no-underline"
+        >
+            <span class="text-text"
+                >SEO<span class="text-primary">Pro</span></span
             >
         </a>
 
-        <ul class="nav-menu">
+        <ul
+            id="nav-menu"
+            class="fixed top-[72px] left-0 right-0 flex flex-col gap-0 bg-background/95 backdrop-blur-xl border-b border-white/10 p-4 translate-y-[-150%] opacity-0 invisible transition-all duration-300 md:translate-y-0 md:opacity-100 md:visible md:static md:flex-row md:bg-transparent md:border-none md:p-0 md:gap-8 data-[open=true]:translate-y-0 data-[open=true]:opacity-100 data-[open=true]:visible"
+        >
             {
                 navItems.map((item) => (
-                    <li>
+                    <li class="w-full md:w-auto">
                         <a
                             href={item.href}
                             class:list={[
-                                "nav-link",
+                                "relative block py-4 text-center md:py-2 md:text-left text-sm font-medium text-text-muted hover:text-text transition-colors group",
                                 {
-                                    active:
+                                    "text-text":
                                         currentPath === item.href ||
                                         (item.href !== `/${lang}` &&
                                             currentPath.startsWith(item.href)),
@@ -47,32 +53,41 @@ const switchLangUrl = currentPath.replace(`/${lang}`, `/${otherLang}`);
                             ]}
                         >
                             {t(item.key, lang)}
+                            <span
+                                class:list={[
+                                    "absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300",
+                                    currentPath === item.href ||
+                                    (item.href !== `/${lang}` &&
+                                        currentPath.startsWith(item.href))
+                                        ? "w-full"
+                                        : "w-0 group-hover:w-full",
+                                ]}
+                            />
                         </a>
                     </li>
                 ))
             }
         </ul>
 
-        <div class="nav-actions">
+        <div class="flex items-center gap-3">
             <!-- Language Toggle -->
             <a
                 href={switchLangUrl}
-                class="lang-toggle"
+                class="flex items-center justify-center px-3 py-2 text-sm font-medium text-text bg-transparent border border-border rounded-lg transition-all hover:bg-white/5 hover:border-primary hover:text-primary"
                 aria-label="Switch language"
             >
                 {lang === "en" ? "中文" : "EN"}
             </a>
 
             <button
-                class="theme-toggle"
+                class="flex items-center justify-center w-10 h-10 bg-transparent border border-border rounded-lg text-text cursor-pointer transition-all hover:bg-white/5 hover:border-primary"
                 onclick="toggleTheme()"
                 aria-label="Toggle theme"
             >
+                <!-- Sun Icon (for light mode) -->
                 <svg
-                    class="icon-sun"
+                    class="hidden [html[data-theme='light']_&]:block w-5 h-5"
                     xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -90,11 +105,10 @@ const switchLangUrl = currentPath.replace(`/${lang}`, `/${otherLang}`);
                     <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
                     <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                 </svg>
+                <!-- Moon Icon (for dark mode) -->
                 <svg
-                    class="icon-moon"
+                    class="block [html[data-theme='light']_&]:hidden w-5 h-5"
                     xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -107,230 +121,28 @@ const switchLangUrl = currentPath.replace(`/${lang}`, `/${otherLang}`);
                 </svg>
             </button>
 
-            <button class="mobile-menu-btn" aria-label="Toggle menu">
-                <span class="hamburger"></span>
+            <button
+                id="mobile-menu-btn"
+                class="md:hidden flex flex-col justify-center gap-1.5 w-10 h-10 bg-transparent border border-border rounded-lg cursor-pointer p-2"
+                aria-label="Toggle menu"
+            >
+                <span class="w-full h-0.5 bg-text block transition-all"></span>
+                <span class="w-full h-0.5 bg-text block transition-all"></span>
+                <span class="w-full h-0.5 bg-text block transition-all"></span>
             </button>
         </div>
     </nav>
 </header>
 
-<style>
-    .header {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        background: var(--color-glass);
-        backdrop-filter: var(--backdrop-blur);
-        -webkit-backdrop-filter: var(--backdrop-blur);
-        border-bottom: 1px solid var(--color-glass-border);
-        transition: all var(--transition-base);
-    }
-
-    .nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: var(--header-height);
-    }
-
-    .logo {
-        font-family: var(--font-heading);
-        font-size: var(--text-xl);
-        font-weight: var(--font-bold);
-        color: var(--color-text);
-        text-decoration: none;
-    }
-
-    .logo-accent {
-        color: var(--color-accent);
-    }
-
-    .nav-menu {
-        display: flex;
-        align-items: center;
-        gap: var(--space-8);
-    }
-
-    .nav-link {
-        position: relative;
-        font-size: var(--text-sm);
-        font-weight: var(--font-medium);
-        color: var(--color-text-muted);
-        text-decoration: none;
-        padding: var(--space-2) 0;
-        transition: color var(--transition-base);
-    }
-
-    .nav-link:hover,
-    .nav-link.active {
-        color: var(--color-text);
-    }
-
-    .nav-link::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: var(--color-accent);
-        transition: width var(--transition-base);
-    }
-
-    .nav-link:hover::after,
-    .nav-link.active::after {
-        width: 100%;
-    }
-
-    .nav-actions {
-        display: flex;
-        align-items: center;
-        gap: var(--space-3);
-    }
-
-    .lang-toggle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: var(--space-2) var(--space-3);
-        font-size: var(--text-sm);
-        font-weight: var(--font-medium);
-        color: var(--color-text);
-        background: transparent;
-        border: 1px solid var(--color-border);
-        border-radius: var(--border-radius-md);
-        text-decoration: none;
-        transition: all var(--transition-base);
-    }
-
-    .lang-toggle:hover {
-        background: var(--color-card-bg);
-        border-color: var(--color-accent);
-        color: var(--color-accent);
-    }
-
-    .theme-toggle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        background: transparent;
-        border: 1px solid var(--color-border);
-        border-radius: var(--border-radius-md);
-        color: var(--color-text);
-        cursor: pointer;
-        transition: all var(--transition-base);
-    }
-
-    .theme-toggle:hover {
-        background: var(--color-card-bg);
-        border-color: var(--color-accent);
-    }
-
-    /* Show/hide sun/moon based on theme */
-    .icon-sun {
-        display: none;
-    }
-
-    .icon-moon {
-        display: block;
-    }
-
-    [data-theme="light"] .icon-sun {
-        display: block;
-    }
-
-    [data-theme="light"] .icon-moon {
-        display: none;
-    }
-
-    .mobile-menu-btn {
-        display: none;
-        flex-direction: column;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        background: transparent;
-        border: 1px solid var(--color-border);
-        border-radius: var(--border-radius-md);
-        cursor: pointer;
-    }
-
-    .hamburger {
-        position: relative;
-        width: 18px;
-        height: 2px;
-        background: var(--color-text);
-        margin: 0 auto;
-    }
-
-    .hamburger::before,
-    .hamburger::after {
-        content: "";
-        position: absolute;
-        width: 18px;
-        height: 2px;
-        background: var(--color-text);
-        left: 0;
-    }
-
-    .hamburger::before {
-        top: -6px;
-    }
-
-    .hamburger::after {
-        top: 6px;
-    }
-
-    /* Mobile Styles */
-    @media (max-width: 768px) {
-        .nav-menu {
-            position: fixed;
-            top: var(--header-height);
-            left: 0;
-            right: 0;
-            flex-direction: column;
-            gap: 0;
-            background: var(--color-glass);
-            backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
-            border-bottom: 1px solid var(--color-glass-border);
-            padding: var(--space-4);
-            transform: translateY(-100%);
-            opacity: 0;
-            visibility: hidden;
-            transition: all var(--transition-base);
-        }
-
-        .nav-menu.open {
-            transform: translateY(0);
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .nav-menu li {
-            width: 100%;
-        }
-
-        .nav-link {
-            display: block;
-            padding: var(--space-4);
-            text-align: center;
-        }
-
-        .mobile-menu-btn {
-            display: flex;
-        }
-    }
-</style>
-
 <script>
     // Mobile menu toggle
-    const mobileMenuBtn = document.querySelector(".mobile-menu-btn");
-    const navMenu = document.querySelector(".nav-menu");
+    const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+    const navMenu = document.getElementById("nav-menu");
 
     mobileMenuBtn?.addEventListener("click", () => {
-        navMenu?.classList.toggle("open");
+        const isOpen = navMenu?.getAttribute("data-open") === "true";
+        navMenu?.setAttribute("data-open", String(!isOpen));
+
+        // rudimentary hamburger animation if needed, but keeping it simple for now
     });
 </script>

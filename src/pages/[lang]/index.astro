@@ -75,27 +75,32 @@ const services = [
 
     <main>
         <!-- Hero Section -->
-        <section class="hero">
+        <section class="min-h-[80vh] flex items-center py-20 md:py-32">
             <div class="container">
-                <div class="hero-content">
-                    <span class="hero-label"
+                <div class="max-w-2xl mb-16">
+                    <span
+                        class="inline-block px-4 py-2 text-sm font-medium text-primary bg-primary/10 rounded-full mb-6"
                         >{
                             lang === "zh"
                                 ? "SEO策略师 & 顾问"
                                 : "SEO Strategist & Consultant"
                         }</span
                     >
-                    <h1 class="hero-title">
+                    <h1
+                        class="text-5xl md:text-6xl font-bold leading-tight mb-6"
+                    >
                         {t("heroTitle", lang)}
                         <span class="text-gradient"
                             >{t("heroTitleAccent", lang)}</span
                         >
                         {t("heroTitleEnd", lang)}
                     </h1>
-                    <p class="hero-description">
+                    <p
+                        class="mt-8 text-lg text-text-muted leading-relaxed max-w-xl"
+                    >
                         {t("heroDescription", lang)}
                     </p>
-                    <div class="hero-actions">
+                    <div class="flex flex-wrap gap-4 mt-8">
                         <a href={`/${lang}/blog`} class="btn btn-primary"
                             >{t("readInsights", lang)}</a
                         >
@@ -105,29 +110,51 @@ const services = [
                     </div>
                 </div>
 
-                <div class="hero-stats">
-                    <div class="stat">
-                        <span class="stat-value">5+</span>
-                        <span class="stat-label"
+                <div
+                    class="flex flex-col md:flex-row gap-6 md:gap-12 pt-8 border-t border-border mt-8"
+                >
+                    <div
+                        class="flex flex-row md:flex-col items-center md:items-start gap-3 md:gap-1"
+                    >
+                        <span
+                            class="font-heading text-3xl md:text-4xl font-bold text-accent"
+                            >5+</span
+                        >
+                        <span
+                            class="text-sm text-text-muted uppercase tracking-wider"
                             >{t("projectsCompleted", lang)}</span
                         >
                     </div>
-                    <div class="stat">
-                        <span class="stat-value">2K+</span>
-                        <span class="stat-label"
+                    <div
+                        class="flex flex-row md:flex-col items-center md:items-start gap-3 md:gap-1"
+                    >
+                        <span
+                            class="font-heading text-3xl md:text-4xl font-bold text-accent"
+                            >2K+</span
+                        >
+                        <span
+                            class="text-sm text-text-muted uppercase tracking-wider"
                             >{t("organicVisits", lang)}</span
                         >
                     </div>
-                    <div class="stat">
-                        <span class="stat-value">1+</span>
-                        <span class="stat-label"
+                    <div
+                        class="flex flex-row md:flex-col items-center md:items-start gap-3 md:gap-1"
+                    >
+                        <span
+                            class="font-heading text-3xl md:text-4xl font-bold text-accent"
+                            >1+</span
+                        >
+                        <span
+                            class="text-sm text-text-muted uppercase tracking-wider"
                             >{t("yearsLearning", lang)}</span
                         >
                     </div>
                 </div>
 
-                <div class="hero-description">
-                    <p>
+                <div class="mt-8">
+                    <p
+                        class="text-lg text-text-muted leading-relaxed max-w-2xl"
+                    >
                         {
                             lang === "zh"
                                 ? "这些成果建立在持续学习、真实项目和不断优化的基础上，以数据驱动分析、实践实验和持续的绩效跟踪为指导，并且随着时间的推移稳步提升。"
@@ -139,24 +166,32 @@ const services = [
         </section>
 
         <!-- Services Section -->
-        <section class="section services">
+        <section class="py-20">
             <div class="container">
-                <div class="section-header">
-                    <h2>{t("whatIDo", lang)}</h2>
-                    <p class="text-muted">{t("servicesDesc", lang)}</p>
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                        {t("whatIDo", lang)}
+                    </h2>
+                    <p class="text-text-muted text-lg">
+                        {t("servicesDesc", lang)}
+                    </p>
                 </div>
 
-                <div class="services-grid">
+                <div
+                    class="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-6"
+                >
                     {
                         services.map((service) => (
-                            <div class="service-card card">
-                                <span class="service-icon">{service.icon}</span>
-                                <h3>
+                            <div class="card flex flex-col items-start gap-4 p-8 text-left hover:border-primary transition-all group">
+                                <span class="text-4xl mb-2 block">
+                                    {service.icon}
+                                </span>
+                                <h3 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
                                     {lang === "zh"
                                         ? service.titleZh
                                         : service.titleEn}
                                 </h3>
-                                <p>
+                                <p class="text-text-muted text-sm leading-relaxed">
                                     {lang === "zh"
                                         ? service.descZh
                                         : service.descEn}
@@ -171,14 +206,18 @@ const services = [
         <!-- Featured Posts Section -->
         {
             displayPosts.length > 0 && (
-                <section class="section posts">
+                <section class="py-20">
                     <div class="container">
-                        <div class="section-header">
-                            <h2>{t("latestInsights", lang)}</h2>
-                            <p class="text-muted">{t("insightsDesc", lang)}</p>
+                        <div class="text-center max-w-2xl mx-auto mb-16">
+                            <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                                {t("latestInsights", lang)}
+                            </h2>
+                            <p class="text-text-muted text-lg">
+                                {t("insightsDesc", lang)}
+                            </p>
                         </div>
 
-                        <div class="posts-grid">
+                        <div class="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-6">
                             {displayPosts.map((post: Post) => (
                                 <BlogCard
                                     title={post.title}
@@ -199,7 +238,7 @@ const services = [
                             ))}
                         </div>
 
-                        <div class="section-footer">
+                        <div class="text-center mt-12">
                             <a href={`/${lang}/blog`} class="btn btn-ghost">
                                 {t("viewAllPosts", lang)}
                             </a>
@@ -210,16 +249,20 @@ const services = [
         }
 
         <!-- CTA Section -->
-        <section class="section cta">
+        <section class="py-20">
             <div class="container">
-                <div class="cta-card card-glass">
-                    <h2>{t("readyToGrow", lang)}</h2>
-                    <p class="text-muted">{t("ctaDesc", lang)}</p>
+                <div class="card-glass text-center p-8 md:p-16 rounded-[2rem]">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">
+                        {t("readyToGrow", lang)}
+                    </h2>
+                    <p class="text-xl text-text-muted mb-8 max-w-xl mx-auto">
+                        {t("ctaDesc", lang)}
+                    </p>
                     <a
                         href="https://wa.me/60142836036"
                         target="_blank"
                         rel="noopener"
-                        class="btn btn-whatsapp"
+                        class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-br from-[#25d366] to-[#128c7e] text-white rounded-full text-lg font-semibold transition-all shadow-[0_4px_15px_rgba(37,211,102,0.3)] hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(37,211,102,0.4)]"
                     >
                         {t("getInTouch", lang)}
                     </a>
@@ -233,192 +276,3 @@ const services = [
 
     <Footer lang={lang} />
 </BaseLayout>
-
-<style>
-    /* Hero Section */
-    .hero {
-        padding: var(--space-24) 0 var(--space-16);
-        min-height: 80vh;
-        display: flex;
-        align-items: center;
-    }
-
-    .hero-content {
-        max-width: 720px;
-        margin-bottom: var(--space-16);
-    }
-
-    .hero-label {
-        display: inline-block;
-        padding: var(--space-2) var(--space-4);
-        font-size: var(--text-sm);
-        font-weight: var(--font-medium);
-        color: var(--color-accent);
-        background: var(--color-accent-subtle);
-        border-radius: var(--border-radius-full);
-        margin-bottom: var(--space-6);
-    }
-
-    .hero-title {
-        font-size: var(--text-6xl);
-        font-weight: var(--font-bold);
-        line-height: 1.1;
-        margin-bottom: var(--space-6);
-    }
-
-    .hero-description {
-        margin-top: var(--space-8);
-    }
-
-    .hero-description p {
-        font-size: var(--text-lg);
-        color: var(--color-text-muted);
-        line-height: 1.7;
-        max-width: 600px;
-    }
-
-    .hero-actions {
-        display: flex;
-        gap: var(--space-4);
-        flex-wrap: wrap;
-    }
-
-    .hero-stats {
-        display: flex;
-        gap: var(--space-12);
-        padding-top: var(--space-8);
-        border-top: 1px solid var(--color-border);
-    }
-
-    .stat {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-1);
-    }
-
-    .stat-value {
-        font-family: var(--font-heading);
-        font-size: var(--text-4xl);
-        font-weight: var(--font-bold);
-        color: var(--color-accent);
-    }
-
-    .stat-label {
-        font-size: var(--text-sm);
-        color: var(--color-text-muted);
-    }
-
-    /* Section Header */
-    .section-header {
-        text-align: center;
-        margin-bottom: var(--space-12);
-    }
-
-    .section-header h2 {
-        margin-bottom: var(--space-3);
-    }
-
-    .section-footer {
-        text-align: center;
-        margin-top: var(--space-10);
-    }
-
-    /* Services Grid */
-    .services-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: var(--space-6);
-    }
-
-    .service-card {
-        text-align: center;
-        padding: var(--space-8);
-    }
-
-    .service-icon {
-        font-size: 2.5rem;
-        margin-bottom: var(--space-4);
-        display: block;
-    }
-
-    .service-card h3 {
-        font-size: var(--text-lg);
-        margin-bottom: var(--space-3);
-    }
-
-    .service-card p {
-        color: var(--color-text-muted);
-        font-size: var(--text-sm);
-        line-height: 1.6;
-    }
-
-    /* Posts Grid */
-    .posts-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: var(--space-6);
-    }
-
-    /* CTA Section */
-    .cta-card {
-        text-align: center;
-        padding: var(--space-16);
-        border-radius: var(--border-radius-xl);
-    }
-
-    .cta-card h2 {
-        margin-bottom: var(--space-4);
-    }
-
-    .cta-card p {
-        margin-bottom: var(--space-8);
-        max-width: 500px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    /* WhatsApp Button */
-    .btn-whatsapp {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.75rem;
-        padding: 1rem 2rem;
-        background: linear-gradient(135deg, #25d366, #128c7e);
-        color: white;
-        border: none;
-        border-radius: 100px;
-        font-size: 1.1rem;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-    }
-
-    .btn-whatsapp:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .hero {
-            min-height: auto;
-            padding: var(--space-16) 0;
-        }
-
-        .hero-stats {
-            flex-direction: column;
-            gap: var(--space-6);
-        }
-
-        .stat {
-            flex-direction: row;
-            align-items: center;
-            gap: var(--space-3);
-        }
-
-        .cta-card {
-            padding: var(--space-8);
-        }
-    }
-</style>

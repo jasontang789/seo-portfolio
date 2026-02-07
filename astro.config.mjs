@@ -1,5 +1,7 @@
 import { defineConfig } from 'astro/config';
 
+import tailwindcss from '@tailwindcss/vite';
+
 // https://astro.build/config
 export default defineConfig({
     site: 'https://seo-portfolio.ray00ooki.workers.dev',
@@ -8,9 +10,11 @@ export default defineConfig({
         inlineStylesheets: 'auto',
     },
     vite: {
-        build: {
-            cssMinify: true,
-        },
+      build: {
+          cssMinify: true,
+      },
+
+      plugins: [tailwindcss()],
     },
     i18n: {
         defaultLocale: 'en',

@@ -16,40 +16,70 @@ const socialLinks = [
 ];
 ---
 
-<footer class="footer">
+<footer class="bg-surface border-t border-border mt-auto pt-16 pb-8">
     <div class="container">
-        <div class="footer-content">
-            <div class="footer-brand">
-                <a href={`/${lang}`} class="logo">
-                    <span class="logo-text"
-                        >SEO<span class="logo-accent">Pro</span></span
+        <div
+            class="grid grid-cols-1 md:grid-cols-[1.5fr_1fr] gap-8 md:gap-12 mb-12"
+        >
+            <div class="max-w-xs">
+                <a
+                    href={`/${lang}`}
+                    class="inline-block font-heading text-xl font-bold text-text no-underline mb-4"
+                >
+                    <span class="text-text"
+                        >SEO<span class="text-primary">Pro</span></span
                     >
                 </a>
-                <p class="footer-tagline">
+                <p class="text-text-muted text-sm leading-relaxed">
                     Helping businesses grow through strategic SEO and content
                     optimization.
                 </p>
             </div>
 
-            <div class="footer-links">
-                <div class="footer-column">
-                    <h4>Navigation</h4>
-                    <ul>
-                        <li><a href={`/${lang}`}>{t("home", lang)}</a></li>
+            <div class="grid grid-cols-2 gap-8">
+                <div class="flex flex-col">
+                    <h4
+                        class="font-heading text-sm font-semibold text-text mb-4 uppercase tracking-wider"
+                    >
+                        Navigation
+                    </h4>
+                    <ul class="flex flex-col gap-3">
                         <li>
-                            <a href={`/${lang}/about`}>{t("about", lang)}</a>
+                            <a
+                                href={`/${lang}`}
+                                class="text-text-muted text-sm no-underline transition-colors hover:text-primary"
+                                >{t("home", lang)}</a>
                         </li>
-                        <li><a href={`/${lang}/blog`}>{t("blog", lang)}</a></li>
                         <li>
-                            <a href={`/${lang}/about-this-website`}
-                                >{t("aboutThisWebsite", lang)}</a>
+                            <a
+                                href={`/${lang}/about`}
+                                class="text-text-muted text-sm no-underline transition-colors hover:text-primary"
+                                >{t("about", lang)}</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href={`/${lang}/blog`}
+                                class="text-text-muted text-sm no-underline transition-colors hover:text-primary"
+                                >{t("blog", lang)}</a>
+                        </li>
+                        <li>
+                            <a
+                                href={`/${lang}/about-this-website`}
+                                class="text-text-muted text-sm no-underline transition-colors hover:text-primary"
+                                >{t("aboutThisWebsite", lang)}</a
+                            >
                         </li>
                     </ul>
                 </div>
 
-                <div class="footer-column">
-                    <h4>Connect</h4>
-                    <ul class="social-links">
+                <div class="flex flex-col">
+                    <h4
+                        class="font-heading text-sm font-semibold text-text mb-4 uppercase tracking-wider"
+                    >
+                        Connect
+                    </h4>
+                    <ul class="flex flex-col gap-3">
                         {
                             socialLinks.map((link) => (
                                 <li>
@@ -57,6 +87,7 @@ const socialLinks = [
                                         href={link.href}
                                         target="_blank"
                                         rel="noopener noreferrer"
+                                        class="text-text-muted text-sm no-underline transition-colors hover:text-primary"
                                     >
                                         {link.label}
                                     </a>
@@ -68,109 +99,11 @@ const socialLinks = [
             </div>
         </div>
 
-        <div class="footer-bottom">
-            <p>&copy; {currentYear} SEO Portfolio. All rights reserved.</p>
+        <div class="pt-8 border-t border-border text-center">
+            <p class="text-text-subtle text-sm">
+                &copy; {currentYear} SEO Portfolio. All rights reserved.
+            </p>
         </div>
     </div>
+    text-align: center; } }
 </footer>
-
-<style>
-    .footer {
-        background: var(--color-bg-secondary);
-        border-top: 1px solid var(--color-border);
-        padding: var(--space-16) 0 var(--space-8);
-        margin-top: auto;
-    }
-
-    .footer-content {
-        display: grid;
-        grid-template-columns: 1.5fr 1fr;
-        gap: var(--space-12);
-        margin-bottom: var(--space-12);
-    }
-
-    .footer-brand {
-        max-width: 320px;
-    }
-
-    .logo {
-        display: inline-block;
-        font-family: var(--font-heading);
-        font-size: var(--text-xl);
-        font-weight: var(--font-bold);
-        color: var(--color-text);
-        text-decoration: none;
-        margin-bottom: var(--space-4);
-    }
-
-    .logo-accent {
-        color: var(--color-accent);
-    }
-
-    .footer-tagline {
-        color: var(--color-text-muted);
-        font-size: var(--text-sm);
-        line-height: 1.6;
-    }
-
-    .footer-links {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--space-8);
-    }
-
-    .footer-column h4 {
-        font-family: var(--font-heading);
-        font-size: var(--text-sm);
-        font-weight: var(--font-semibold);
-        color: var(--color-text);
-        margin-bottom: var(--space-4);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-
-    .footer-column ul {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-3);
-    }
-
-    .footer-column a {
-        color: var(--color-text-muted);
-        font-size: var(--text-sm);
-        text-decoration: none;
-        transition: color var(--transition-base);
-    }
-
-    .footer-column a:hover {
-        color: var(--color-accent);
-    }
-
-    .footer-bottom {
-        padding-top: var(--space-8);
-        border-top: 1px solid var(--color-border);
-        text-align: center;
-    }
-
-    .footer-bottom p {
-        color: var(--color-text-subtle);
-        font-size: var(--text-sm);
-    }
-
-    @media (max-width: 768px) {
-        .footer-content {
-            grid-template-columns: 1fr;
-            gap: var(--space-8);
-        }
-
-        .footer-brand {
-            max-width: 100%;
-            text-align: center;
-        }
-
-        .footer-links {
-            justify-items: center;
-            text-align: center;
-        }
-    }
-</style>

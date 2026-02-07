@@ -1,327 +1,107 @@
-/*
- * SEO Portfolio - Style Guide
- * ============================
- * A minimalist, modern design system for an SEO professional portfolio
- * 
- * Typography: Inter (body) + Montserrat (headings)
- * Theme: Dark-first with light mode toggle
- * Features: Glassmorphism, smooth transitions
- */
+@import "tailwindcss";
 
-/* =============================================================================
-   CSS RESET & BASE
-   ============================================================================= */
-
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  font-size: 16px;
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  font-family: var(--font-body);
-  font-size: var(--text-base);
-  line-height: 1.6;
-  color: var(--color-text);
-  background-color: var(--color-bg);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-img, picture, video, canvas, svg {
-  display: block;
-  max-width: 100%;
-}
-
-a {
-  color: var(--color-accent);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-a:hover {
-  color: var(--color-accent-hover);
-}
-
-ul, ol {
-  list-style: none;
-}
-
-/* =============================================================================
-   CSS VARIABLES - DESIGN TOKENS
-   ============================================================================= */
-
-:root {
-  /* === DARK THEME (DEFAULT) === */
-  --color-bg: #0a0a0a;
-  --color-bg-secondary: #111111;
-  --color-text: #f5f5f5;
-  --color-text-muted: #a0a0a0;
-  --color-text-subtle: #6b6b6b;
-  --color-accent: #3b82f6;
-  --color-accent-hover: #60a5fa;
-  --color-accent-subtle: rgba(59, 130, 246, 0.1);
-  --color-border: #262626;
-  --color-border-subtle: #1a1a1a;
-  --color-card-bg: rgba(255, 255, 255, 0.03);
-  --color-card-hover: rgba(255, 255, 255, 0.06);
-  
-  /* Glassmorphism */
-  --color-glass: rgba(20, 20, 20, 0.8);
-  --color-glass-border: rgba(255, 255, 255, 0.1);
-  --backdrop-blur: blur(12px);
-  
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.3);
-
-  /* === TYPOGRAPHY === */
+@theme {
   --font-heading: 'Montserrat', sans-serif;
   --font-body: 'Inter', sans-serif;
-  
-  /* Font Sizes */
-  --text-xs: 0.75rem;      /* 12px */
-  --text-sm: 0.875rem;     /* 14px */
-  --text-base: 1rem;       /* 16px */
-  --text-lg: 1.125rem;     /* 18px */
-  --text-xl: 1.25rem;      /* 20px */
-  --text-2xl: 1.5rem;      /* 24px */
-  --text-3xl: 1.875rem;    /* 30px */
-  --text-4xl: 2.25rem;     /* 36px */
-  --text-5xl: 3rem;        /* 48px */
-  --text-6xl: 3.75rem;     /* 60px */
-  
-  /* Font Weights */
-  --font-normal: 400;
-  --font-medium: 500;
-  --font-semibold: 600;
-  --font-bold: 700;
 
-  /* === SPACING === */
-  --space-1: 0.25rem;      /* 4px */
-  --space-2: 0.5rem;       /* 8px */
-  --space-3: 0.75rem;      /* 12px */
-  --space-4: 1rem;         /* 16px */
-  --space-5: 1.25rem;      /* 20px */
-  --space-6: 1.5rem;       /* 24px */
-  --space-8: 2rem;         /* 32px */
-  --space-10: 2.5rem;      /* 40px */
-  --space-12: 3rem;        /* 48px */
-  --space-16: 4rem;        /* 64px */
-  --space-20: 5rem;        /* 80px */
-  --space-24: 6rem;        /* 96px */
+  --color-background: #0a0a0a;
+  --color-surface: #111111;
+  --color-card-bg: #111111;
+  --color-bg-secondary: #1a1a1a;
 
-  /* === LAYOUT === */
-  --max-width: 1200px;
-  --max-width-content: 720px;
-  --header-height: 72px;
-  --border-radius-sm: 4px;
-  --border-radius-md: 8px;
-  --border-radius-lg: 12px;
-  --border-radius-xl: 16px;
-  --border-radius-full: 9999px;
+  --color-primary: #3b82f6;
+  --color-primary-hover: #60a5fa;
+  --color-accent: #3b82f6;
+  --color-accent-subtle: rgba(59, 130, 246, 0.1);
+  --color-accent-hover: #2563eb;
 
-  /* === TRANSITIONS === */
-  --transition-fast: 150ms ease;
-  --transition-base: 200ms ease;
-  --transition-slow: 300ms ease;
+  --color-text: #f5f5f5;
+  --color-text-muted: #a0a0a0;
+  --color-text-subtle: #737373;
+  --color-border: #262626;
+
+  --spacing-12: 3rem;
+  --spacing-20: 5rem;
+  --spacing-24: 6rem;
 }
 
-/* =============================================================================
-   LIGHT THEME
-   ============================================================================= */
+/* Custom Utilities */
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-br from-primary to-purple-500 bg-clip-text text-transparent;
+  }
 
-[data-theme="light"] {
-  --color-bg: #fafafa;
-  --color-bg-secondary: #ffffff;
-  --color-text: #1a1a1a;
-  --color-text-muted: #666666;
-  --color-text-subtle: #999999;
-  --color-accent: #2563eb;
-  --color-accent-hover: #1d4ed8;
-  --color-accent-subtle: rgba(37, 99, 235, 0.1);
-  --color-border: #e5e5e5;
-  --color-border-subtle: #f0f0f0;
-  --color-card-bg: #ffffff;
-  --color-card-hover: #f5f5f5;
-  
-  /* Glassmorphism - Light */
-  --color-glass: rgba(255, 255, 255, 0.85);
-  --color-glass-border: rgba(0, 0, 0, 0.1);
-  
-  /* Shadows - Light */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
-  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
-  --shadow-glow: 0 0 20px rgba(37, 99, 235, 0.2);
-}
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
 
-/* =============================================================================
-   TYPOGRAPHY CLASSES
-   ============================================================================= */
+  .card-hover {
+    @apply transition-all duration-300;
+  }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
-  font-weight: var(--font-bold);
-  line-height: 1.2;
-  color: var(--color-text);
-}
+  .card-hover:hover {
+    @apply bg-white/10 border-primary/50 shadow-lg shadow-primary/20;
+  }
 
-h1 { font-size: var(--text-5xl); }
-h2 { font-size: var(--text-4xl); }
-h3 { font-size: var(--text-3xl); }
-h4 { font-size: var(--text-2xl); }
-h5 { font-size: var(--text-xl); }
-h6 { font-size: var(--text-lg); }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200;
+  }
 
-.text-gradient {
-  background: linear-gradient(135deg, var(--color-accent) 0%, #8b5cf6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+  .btn-primary {
+    @apply bg-primary text-white;
+  }
 
-.text-muted {
-  color: var(--color-text-muted);
-}
+  .btn-primary:hover {
+    @apply bg-primary-hover;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  }
 
-.text-subtle {
-  color: var(--color-text-subtle);
-}
+  .btn-ghost {
+    @apply bg-transparent border border-border text-text;
+  }
 
-/* =============================================================================
-   LAYOUT UTILITIES
-   ============================================================================= */
-
-.container {
-  width: 100%;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 var(--space-6);
-}
-
-.container-content {
-  max-width: var(--max-width-content);
-  margin: 0 auto;
-}
-
-.section {
-  padding: var(--space-20) 0;
-}
-
-.section-sm {
-  padding: var(--space-12) 0;
-}
-
-/* =============================================================================
-   COMPONENT STYLES
-   ============================================================================= */
-
-/* Cards */
-.card {
-  background: var(--color-card-bg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-lg);
-  padding: var(--space-6);
-  transition: all var(--transition-base);
-}
-
-.card:hover {
-  background: var(--color-card-hover);
-  border-color: var(--color-accent);
-  box-shadow: var(--shadow-md);
-}
-
-.card-glass {
-  background: var(--color-glass);
-  backdrop-filter: var(--backdrop-blur);
-  -webkit-backdrop-filter: var(--backdrop-blur);
-  border: 1px solid var(--color-glass-border);
-}
-
-/* Buttons */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-6);
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  font-weight: var(--font-medium);
-  border-radius: var(--border-radius-md);
-  border: none;
-  cursor: pointer;
-  transition: all var(--transition-base);
-}
-
-.btn-primary {
-  background: var(--color-accent);
-  color: #ffffff;
-}
-
-.btn-primary:hover {
-  background: var(--color-accent-hover);
-  box-shadow: var(--shadow-glow);
-}
-
-.btn-ghost {
-  background: transparent;
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
-}
-
-.btn-ghost:hover {
-  background: var(--color-card-bg);
-  border-color: var(--color-accent);
-}
-
-/* Tags */
-.tag {
-  display: inline-block;
-  padding: var(--space-1) var(--space-3);
-  font-size: var(--text-xs);
-  font-weight: var(--font-medium);
-  color: var(--color-accent);
-  background: var(--color-accent-subtle);
-  border-radius: var(--border-radius-full);
-}
-
-/* =============================================================================
-   RESPONSIVE BREAKPOINTS
-   ============================================================================= */
-
-@media (max-width: 1024px) {
-  :root {
-    --text-5xl: 2.5rem;
-    --text-6xl: 3rem;
+  .btn-ghost:hover {
+    @apply bg-white/5 border-primary;
   }
 }
 
-@media (max-width: 768px) {
-  :root {
-    --text-4xl: 1.875rem;
-    --text-5xl: 2rem;
-    --space-20: 3rem;
+/* Base Styles */
+@layer base {
+  html {
+    @apply scroll-smooth antialiased;
   }
-  
-  .container {
-    padding: 0 var(--space-4);
-  }
-}
 
-@media (max-width: 480px) {
-  :root {
-    --text-3xl: 1.5rem;
-    --text-4xl: 1.75rem;
-    --text-5xl: 1.875rem;
+  body {
+    @apply bg-background text-text font-body text-base leading-relaxed;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading font-bold text-text leading-tight;
+  }
+
+  h1 {
+    @apply text-5xl md:text-6xl;
+  }
+
+  h2 {
+    @apply text-4xl md:text-5xl;
+  }
+
+  h3 {
+    @apply text-3xl md:text-4xl;
+  }
+
+  /* Dark/Light Mode Handling (manual for now, can use 'dark:' later) */
+  [data-theme="light"] {
+    --color-background: #fafafa;
+    --color-surface: #ffffff;
+    --color-text: #1a1a1a;
+    --color-text-muted: #666666;
+    --color-border: #e5e5e5;
   }
 }
