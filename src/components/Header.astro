@@ -55,7 +55,7 @@ const switchLangUrl = currentPath.replace(`/${lang}`, `/${otherLang}`);
                             {t(item.key, lang)}
                             <span
                                 class:list={[
-                                    "absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300",
+                                    "absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 hidden md:block",
                                     currentPath === item.href ||
                                     (item.href !== `/${lang}` &&
                                         currentPath.startsWith(item.href))
