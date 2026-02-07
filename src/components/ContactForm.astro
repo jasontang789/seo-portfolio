@@ -284,28 +284,113 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
 <style>
     .contact-section {
         padding: 6rem 2rem;
-        background: linear-gradient(
-            180deg,
-            var(--bg-primary) 0%,
-            var(--bg-secondary) 100%
-        );
         position: relative;
         overflow: hidden;
+        background: linear-gradient(
+            135deg,
+            rgba(15, 15, 35, 0.95) 0%,
+            rgba(30, 20, 60, 0.95) 50%,
+            rgba(15, 15, 35, 0.95) 100%
+        );
     }
 
+    /* Background overlay with gradient mesh */
     .contact-section::before {
         content: "";
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: linear-gradient(
-            90deg,
-            transparent,
-            var(--color-accent),
-            transparent
+        inset: 0;
+        background:
+            radial-gradient(
+                ellipse at 20% 20%,
+                rgba(99, 102, 241, 0.15) 0%,
+                transparent 50%
+            ),
+            radial-gradient(
+                ellipse at 80% 80%,
+                rgba(139, 92, 246, 0.15) 0%,
+                transparent 50%
+            ),
+            radial-gradient(
+                ellipse at 50% 50%,
+                rgba(79, 70, 229, 0.1) 0%,
+                transparent 70%
+            );
+        z-index: 0;
+    }
+
+    /* Animated gradient orbs */
+    .contact-section::after {
+        content: "";
+        position: absolute;
+        top: 10%;
+        left: 5%;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(
+            circle,
+            rgba(99, 102, 241, 0.3) 0%,
+            transparent 70%
         );
+        border-radius: 50%;
+        filter: blur(60px);
+        animation: floatOrb 8s ease-in-out infinite;
+        z-index: 0;
+    }
+
+    @keyframes floatOrb {
+        0%,
+        100% {
+            transform: translate(0, 0) scale(1);
+        }
+        50% {
+            transform: translate(30px, -30px) scale(1.1);
+        }
+    }
+
+    /* Secondary orb */
+    .contact-wrapper::before {
+        content: "";
+        position: absolute;
+        bottom: 10%;
+        right: 5%;
+        width: 250px;
+        height: 250px;
+        background: radial-gradient(
+            circle,
+            rgba(139, 92, 246, 0.25) 0%,
+            transparent 70%
+        );
+        border-radius: 50%;
+        filter: blur(50px);
+        animation: floatOrb2 10s ease-in-out infinite;
+        z-index: 0;
+    }
+
+    @keyframes floatOrb2 {
+        0%,
+        100% {
+            transform: translate(0, 0) scale(1);
+        }
+        50% {
+            transform: translate(-20px, 20px) scale(1.15);
+        }
+    }
+
+    /* Grid pattern overlay */
+    .contact-wrapper::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+            linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.02) 1px,
+                transparent 1px
+            );
+        background-size: 50px 50px;
+        z-index: 0;
+        pointer-events: none;
     }
 
     .contact-wrapper {
@@ -315,6 +400,8 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
         grid-template-columns: 1fr 1.2fr;
         gap: 4rem;
         align-items: start;
+        position: relative;
+        z-index: 1;
     }
 
     .contact-info {
