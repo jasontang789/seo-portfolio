@@ -193,17 +193,6 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
                     <span class="btn-loading" style="display: none;"
                         >{t.sending}</span
                     >
-                    <svg
-                        class="btn-arrow"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                    >
-                        <path d="M5 12h14M12 5l7 7-7 7"></path>
-                    </svg>
                 </button>
 
                 <div id="form-status" class="form-status"></div>
@@ -220,17 +209,13 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
     </div>
 </section>
 
-<!-- reCAPTCHA v3 Script -->
-<script is:inline define:vars={{ RECAPTCHA_SITE_KEY }}>
-    const script = document.createElement("script");
-    script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
-    script.async = true;
-    document.head.appendChild(script);
-
-    script.onload = function () {
+<!-- Form Script - Simple submission without reCAPTCHA requirement -->
+<script is:inline>
+    document.addEventListener("DOMContentLoaded", function () {
         const form = document.getElementById("contact-form");
+        if (!form) return;
 
-        form.addEventListener("submit", function (e) {
+        form.addEventListener("submit", async function (e) {
             e.preventDefault();
 
             const submitBtn = document.getElementById("submit-btn");
@@ -238,47 +223,45 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
             const btnLoading = submitBtn.querySelector(".btn-loading");
             const formStatus = document.getElementById("form-status");
 
+            // Show loading state
             btnText.style.display = "none";
             btnLoading.style.display = "inline";
             submitBtn.disabled = true;
+            formStatus.className = "form-status";
+            formStatus.textContent = "";
 
-            grecaptcha.ready(function () {
-                grecaptcha
-                    .execute(RECAPTCHA_SITE_KEY, { action: "submit" })
-                    .then(function (token) {
-                        document.getElementById("recaptchaResponse").value =
-                            token;
+            try {
+                const formData = new FormData(form);
 
-                        fetch(form.action, {
-                            method: "POST",
-                            body: new FormData(form),
-                        })
-                            .then((response) => response.json())
-                            .then((data) => {
-                                if (data.success) {
-                                    formStatus.textContent =
-                                        "Message sent successfully! ✓";
-                                    formStatus.className =
-                                        "form-status success";
-                                    form.reset();
-                                } else {
-                                    throw new Error("Form submission failed");
-                                }
-                            })
-                            .catch((error) => {
-                                formStatus.textContent =
-                                    "Something went wrong. Please try again.";
-                                formStatus.className = "form-status error";
-                            })
-                            .finally(() => {
-                                btnText.style.display = "inline";
-                                btnLoading.style.display = "none";
-                                submitBtn.disabled = false;
-                            });
-                    });
-            });
+                const response = await fetch(form.action, {
+                    method: "POST",
+                    body: formData,
+                });
+
+                const data = await response.json();
+                console.log("Form response:", data);
+
+                if (data.success) {
+                    formStatus.textContent = "Message sent successfully! ✓";
+                    formStatus.className = "form-status success";
+                    form.reset();
+                } else {
+                    formStatus.textContent =
+                        data.message || "Submission failed. Please try again.";
+                    formStatus.className = "form-status error";
+                }
+            } catch (error) {
+                console.error("Form error:", error);
+                formStatus.textContent =
+                    "Network error. Please check your connection.";
+                formStatus.className = "form-status error";
+            } finally {
+                btnText.style.display = "inline";
+                btnLoading.style.display = "none";
+                submitBtn.disabled = false;
+            }
         });
-    };
+    });
 </script>
 
 <style>
