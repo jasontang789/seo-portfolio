@@ -83,13 +83,42 @@ const htmlLang = lang === "zh" ? "zh-CN" : "en";
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Fonts: Inter + Montserrat + Ma Shan Zheng (Chinese) -->
+    <!-- Fonts: Inter + Montserrat (Async Load) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Ma+Shan+Zheng&family=Montserrat:wght@600;700;800&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+
+    <!-- Chinese Font: Ma Shan Zheng (Conditional & Async) -->
+    {
+      lang === "zh" && (
+        <>
+          <link
+            rel="preload"
+            href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap"
+            as="style"
+            onload="this.onload=null;this.rel='stylesheet'"
+          />
+          <noscript>
+            <link
+              href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap"
+              rel="stylesheet"
+            />
+          </noscript>
+        </>
+      )
+    }
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
