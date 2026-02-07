@@ -107,23 +107,33 @@ const services = [
 
                 <div class="hero-stats">
                     <div class="stat">
-                        <span class="stat-value">150+</span>
+                        <span class="stat-value">5+</span>
                         <span class="stat-label"
                             >{t("projectsCompleted", lang)}</span
                         >
                     </div>
                     <div class="stat">
-                        <span class="stat-value">5M+</span>
+                        <span class="stat-value">2K+</span>
                         <span class="stat-label"
-                            >{t("organicTraffic", lang)}</span
+                            >{t("organicVisits", lang)}</span
                         >
                     </div>
                     <div class="stat">
-                        <span class="stat-value">8+</span>
+                        <span class="stat-value">1+</span>
                         <span class="stat-label"
-                            >{t("yearsExperience", lang)}</span
+                            >{t("yearsLearning", lang)}</span
                         >
                     </div>
+                </div>
+
+                <div class="hero-description">
+                    <p>
+                        {
+                            lang === "zh"
+                                ? "这些成果建立在持续学习、真实项目和不断优化的基础上，以数据驱动分析、实践实验和持续的绩效跟踪为指导，并且随着时间的推移稳步提升。"
+                                : "These results are built through continuous learning, real projects, and ongoing optimization, guided by data-driven analysis, hands-on experimentation, and consistent performance tracking and they are steadily improving over time."
+                        }
+                    </p>
                 </div>
             </div>
         </section>
@@ -257,10 +267,13 @@ const services = [
     }
 
     .hero-description {
+        margin-top: var(--space-8);
+    }
+
+    .hero-description p {
         font-size: var(--text-lg);
         color: var(--color-text-muted);
         line-height: 1.7;
-        margin-bottom: var(--space-8);
         max-width: 600px;
     }
 
