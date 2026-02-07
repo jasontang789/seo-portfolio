@@ -1,4 +1,7 @@
 ---
+import type { SupportedLanguage } from "../lib/translate";
+import { t } from "../lib/translate";
+
 export interface Props {
     title: string;
     excerpt: string;
@@ -6,19 +9,31 @@ export interface Props {
     date: string;
     category?: string;
     image?: string;
+    lang?: SupportedLanguage;
 }
 
-const { title, excerpt, slug, date, category, image } = Astro.props;
+const {
+    title,
+    excerpt,
+    slug,
+    date,
+    category,
+    image,
+    lang = "en",
+} = Astro.props;
 
-const formattedDate = new Date(date).toLocaleDateString("en-US", {
+const locale = lang === "zh" ? "zh-CN" : "en-US";
+const formattedDate = new Date(date).toLocaleDateString(locale, {
     year: "numeric",
     month: "long",
     day: "numeric",
 });
+
+const readMoreText = lang === "zh" ? "阅读更多 →" : "Read more →";
 ---
 
 <article class="blog-card">
-    <a href={`/blog/${slug}`} class="card-link">
+    <a href={`/${lang}/blog/${slug}`} class="card-link">
         {
             image && (
                 <div class="card-image">
@@ -36,7 +51,7 @@ const formattedDate = new Date(date).toLocaleDateString("en-US", {
 
             <div class="card-meta">
                 <time datetime={date}>{formattedDate}</time>
-                <span class="read-more">Read more →</span>
+                <span class="read-more">{readMoreText}</span>
             </div>
         </div>
     </a>

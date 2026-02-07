@@ -1,0 +1,396 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Header from "../../../components/Header.astro";
+import Footer from "../../../components/Footer.astro";
+import { getAllPosts, getPostBySlug, urlFor } from "../../../lib/sanity";
+import { formatDate, calculateReadTime, type Post } from "../../../lib/posts";
+import {
+    t,
+    translateToZh,
+    type SupportedLanguage,
+} from "../../../lib/translate";
+
+// Required for static site generation - fetch all post slugs from Sanity
+export async function getStaticPaths() {
+    const posts = await getAllPosts();
+    const paths = [];
+
+    for (const post of posts) {
+        // Generate paths for both languages
+        paths.push({
+            params: { lang: "en", slug: post.slug },
+            props: { post, lang: "en" },
+        });
+        paths.push({
+            params: { lang: "zh", slug: post.slug },
+            props: { post, lang: "zh" },
+        });
+    }
+
+    return paths;
+}
+
+interface Props {
+    post: Post;
+    lang: SupportedLanguage;
+}
+
+const { post, lang } = Astro.props;
+const fullPost = await getPostBySlug(post.slug);
+
+// Translate content if Chinese
+let displayPost = fullPost;
+if (lang === "zh") {
+    displayPost = {
+        ...fullPost,
+        title: await translateToZh(fullPost.title),
+        excerpt: await translateToZh(fullPost.excerpt),
+    };
+}
+
+const formattedDate = formatDate(displayPost.publishedAt);
+const readTime = calculateReadTime(displayPost.content);
+const imageUrl = displayPost.featuredImage
+    ? urlFor(displayPost.featuredImage).width(1200).height(600).url()
+    : null;
+
+// Helper function to convert Portable Text to HTML
+function renderPortableText(blocks: any[]): string {
+    if (!blocks || !Array.isArray(blocks)) return "";
+
+    return blocks
+        .map((block) => {
+            if (block._type !== "block") {
+                // Handle images
+                if (block._type === "image") {
+                    const imgUrl = urlFor(block).width(800).url();
+                    return `<figure><img src="${imgUrl}" alt="${block.alt || ""}" />${block.caption ? `<figcaption>${block.caption}</figcaption>` : ""}</figure>`;
+                }
+                return "";
+            }
+
+            // Handle text blocks
+            const style = block.style || "normal";
+            const children =
+                block.children
+                    ?.map((child: any) => {
+                        let text = child.text || "";
+
+                        // Apply marks (bold, italic, etc.)
+                        if (child.marks) {
+                            child.marks.forEach((mark: string) => {
+                                if (mark === "strong")
+                                    text = `<strong>${text}</strong>`;
+                                if (mark === "em") text = `<em>${text}</em>`;
+                                if (mark === "code")
+                                    text = `<code>${text}</code>`;
+                            });
+                        }
+                        return text;
+                    })
+                    .join("") || "";
+
+            // Map styles to HTML tags
+            switch (style) {
+                case "h2":
+                    return `<h2>${children}</h2>`;
+                case "h3":
+                    return `<h3>${children}</h3>`;
+                case "h4":
+                    return `<h4>${children}</h4>`;
+                case "blockquote":
+                    return `<blockquote>${children}</blockquote>`;
+                default:
+                    return `<p>${children}</p>`;
+            }
+        })
+        .join("\n");
+}
+
+// Translate content blocks if Chinese
+async function getTranslatedContent() {
+    if (lang !== "zh" || !fullPost.content)
+        return renderPortableText(fullPost.content);
+
+    const htmlContent = renderPortableText(fullPost.content);
+    return await translateToZh(htmlContent);
+}
+
+const translatedContent = await getTranslatedContent();
+---
+
+<BaseLayout
+    title={`${displayPost.seo?.metaTitle || displayPost.title} | SEO Portfolio`}
+    description={displayPost.seo?.metaDescription || displayPost.excerpt}
+    ogImage={imageUrl || undefined}
+    lang={lang}
+>
+    <Header lang={lang} />
+
+    <main>
+        <article class="article">
+            <!-- Article Header -->
+            <header class="article-header">
+                <div class="container container-content">
+                    <a href={`/${lang}/blog`} class="back-link"
+                        >{t("backToBlog", lang)}</a
+                    >
+                    {
+                        displayPost.categories?.[0] && (
+                            <span class="tag">
+                                {displayPost.categories[0].title}
+                            </span>
+                        )
+                    }
+                    <h1>{displayPost.title}</h1>
+                    <div class="article-meta">
+                        <time datetime={displayPost.publishedAt}
+                            >{formattedDate}</time
+                        >
+                        <span class="separator">•</span>
+                        <span>{readTime}</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Featured Image -->
+            {
+                imageUrl && (
+                    <div class="article-image">
+                        <div class="container">
+                            <img
+                                src={imageUrl}
+                                alt={
+                                    displayPost.featuredImage?.alt ||
+                                    displayPost.title
+                                }
+                            />
+                        </div>
+                    </div>
+                )
+            }
+
+            <!-- Article Content -->
+            <div class="article-content">
+                <div class="container container-content">
+                    <div class="prose" id="content">
+                        {
+                            translatedContent ? (
+                                <div set:html={translatedContent} />
+                            ) : (
+                                <p>
+                                    {lang === "zh"
+                                        ? "暂无内容。"
+                                        : "No content available."}
+                                </p>
+                            )
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Article Footer -->
+            <footer class="article-footer">
+                <div class="container container-content">
+                    <div class="share-section">
+                        <span class="share-label"
+                            >{t("shareArticle", lang)}</span
+                        >
+                        <div class="share-buttons">
+                            <a
+                                href="#"
+                                class="share-btn"
+                                aria-label="Share on Twitter">Twitter</a
+                            >
+                            <a
+                                href="#"
+                                class="share-btn"
+                                aria-label="Share on LinkedIn">LinkedIn</a
+                            >
+                            <a href="#" class="share-btn" aria-label="Copy link"
+                                >{t("copyLink", lang)}</a
+                            >
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </article>
+    </main>
+
+    <Footer />
+</BaseLayout>
+
+<style>
+    .article-header {
+        padding: var(--space-24) 0 var(--space-8);
+    }
+
+    .back-link {
+        display: inline-block;
+        font-size: var(--text-sm);
+        color: var(--color-text-muted);
+        margin-bottom: var(--space-6);
+        transition: color var(--transition-base);
+    }
+
+    .back-link:hover {
+        color: var(--color-accent);
+    }
+
+    .tag {
+        display: inline-block;
+        padding: var(--space-1) var(--space-3);
+        font-size: var(--text-xs);
+        font-weight: var(--font-medium);
+        color: var(--color-accent);
+        background: var(--color-accent-subtle);
+        border-radius: var(--border-radius-full);
+        margin-bottom: var(--space-4);
+    }
+
+    .article-header h1 {
+        font-size: var(--text-5xl);
+        line-height: 1.2;
+        margin-bottom: var(--space-4);
+    }
+
+    .article-meta {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        color: var(--color-text-muted);
+        font-size: var(--text-sm);
+    }
+
+    .separator {
+        opacity: 0.5;
+    }
+
+    .article-image {
+        margin-bottom: var(--space-12);
+    }
+
+    .article-image img {
+        width: 100%;
+        border-radius: var(--border-radius-lg);
+    }
+
+    .article-content {
+        padding-bottom: var(--space-16);
+    }
+
+    .prose {
+        font-size: var(--text-lg);
+        line-height: 1.8;
+        color: var(--color-text);
+    }
+
+    .prose :global(h2) {
+        font-size: var(--text-3xl);
+        margin-top: var(--space-12);
+        margin-bottom: var(--space-6);
+    }
+
+    .prose :global(h3) {
+        font-size: var(--text-2xl);
+        margin-top: var(--space-10);
+        margin-bottom: var(--space-4);
+    }
+
+    .prose :global(p) {
+        margin-bottom: var(--space-6);
+    }
+
+    .prose :global(ul),
+    .prose :global(ol) {
+        margin-bottom: var(--space-6);
+        padding-left: var(--space-8);
+    }
+
+    .prose :global(li) {
+        margin-bottom: var(--space-2);
+    }
+
+    .prose :global(blockquote) {
+        border-left: 4px solid var(--color-accent);
+        padding-left: var(--space-6);
+        font-style: italic;
+        color: var(--color-text-muted);
+        margin: var(--space-8) 0;
+    }
+
+    .prose :global(code) {
+        background: var(--color-card-bg);
+        padding: var(--space-1) var(--space-2);
+        border-radius: var(--border-radius-sm);
+        font-size: 0.9em;
+    }
+
+    .prose :global(pre) {
+        background: var(--color-card-bg);
+        padding: var(--space-6);
+        border-radius: var(--border-radius-md);
+        overflow-x: auto;
+        margin: var(--space-8) 0;
+    }
+
+    .prose :global(figure) {
+        margin: var(--space-8) 0;
+    }
+
+    .prose :global(figure img) {
+        width: 100%;
+        border-radius: var(--border-radius-md);
+    }
+
+    .prose :global(figcaption) {
+        text-align: center;
+        font-size: var(--text-sm);
+        color: var(--color-text-muted);
+        margin-top: var(--space-3);
+    }
+
+    .article-footer {
+        border-top: 1px solid var(--color-border);
+        padding: var(--space-8) 0;
+    }
+
+    .share-section {
+        display: flex;
+        align-items: center;
+        gap: var(--space-4);
+        flex-wrap: wrap;
+    }
+
+    .share-label {
+        font-size: var(--text-sm);
+        color: var(--color-text-muted);
+    }
+
+    .share-buttons {
+        display: flex;
+        gap: var(--space-3);
+    }
+
+    .share-btn {
+        padding: var(--space-2) var(--space-4);
+        font-size: var(--text-sm);
+        color: var(--color-text);
+        background: var(--color-card-bg);
+        border: 1px solid var(--color-border);
+        border-radius: var(--border-radius-md);
+        text-decoration: none;
+        transition: all var(--transition-base);
+    }
+
+    .share-btn:hover {
+        border-color: var(--color-accent);
+        color: var(--color-accent);
+    }
+
+    @media (max-width: 768px) {
+        .article-header h1 {
+            font-size: var(--text-4xl);
+        }
+    }
+</style>

@@ -1,0 +1,160 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { t, type SupportedLanguage } from "../../lib/translate";
+
+export function getStaticPaths() {
+    return [{ params: { lang: "en" } }, { params: { lang: "zh" } }];
+}
+
+const { lang } = Astro.params as { lang: SupportedLanguage };
+
+const content = {
+    en: {
+        title: "About Me | SEO Professional",
+        description:
+            "Learn about my background in SEO, my approach to search optimization, and how I can help your business grow.",
+        heading: "About Me",
+        subheading: "SEO Strategist & Consultant",
+        intro: "I'm a passionate SEO professional with over 8 years of experience helping businesses improve their organic search presence. My data-driven approach combines technical expertise with creative content strategies.",
+        skills: [
+            "Technical SEO Audits",
+            "Content Strategy",
+            "Link Building",
+            "Analytics & Reporting",
+        ],
+        experience:
+            "With a track record of delivering results for clients across various industries, I specialize in transforming websites into high-performing organic traffic machines.",
+    },
+    zh: {
+        title: "关于我 | SEO专家",
+        description:
+            "了解我在SEO方面的背景、我的搜索优化方法以及我如何帮助您的业务增长。",
+        heading: "关于我",
+        subheading: "SEO策略师与顾问",
+        intro: "我是一位充满热情的SEO专业人士，拥有超过8年帮助企业改善自然搜索排名的经验。我的数据驱动方法将技术专业知识与创意内容策略相结合。",
+        skills: ["技术SEO审计", "内容策略", "链接建设", "分析与报告"],
+        experience:
+            "凭借为各行各业客户交付成果的良好记录，我专注于将网站转变为高性能的自然流量引擎。",
+    },
+};
+
+const c = content[lang];
+---
+
+<BaseLayout title={c.title} description={c.description} lang={lang}>
+    <Header lang={lang} />
+
+    <main>
+        <section class="about-header">
+            <div class="container">
+                <span class="page-label">{c.subheading}</span>
+                <h1>{c.heading}</h1>
+            </div>
+        </section>
+
+        <section class="about-content section">
+            <div class="container container-content">
+                <div class="about-intro">
+                    <p class="lead">{c.intro}</p>
+                </div>
+
+                <div class="skills-section">
+                    <h2>{lang === "zh" ? "我的专长" : "My Expertise"}</h2>
+                    <div class="skills-grid">
+                        {
+                            c.skills.map((skill) => (
+                                <div class="skill-item card">
+                                    <span class="skill-icon">✓</span>
+                                    <span>{skill}</span>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>
+
+                <div class="experience-section">
+                    <p>{c.experience}</p>
+                </div>
+
+                <div class="cta-section">
+                    <a href="mailto:hello@example.com" class="btn btn-primary">
+                        {t("getInTouch", lang)}
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <Footer />
+</BaseLayout>
+
+<style>
+    .about-header {
+        padding: var(--space-24) 0 var(--space-12);
+        text-align: center;
+    }
+
+    .page-label {
+        display: inline-block;
+        padding: var(--space-2) var(--space-4);
+        font-size: var(--text-sm);
+        font-weight: var(--font-medium);
+        color: var(--color-accent);
+        background: var(--color-accent-subtle);
+        border-radius: var(--border-radius-full);
+        margin-bottom: var(--space-6);
+    }
+
+    .about-header h1 {
+        font-size: var(--text-5xl);
+    }
+
+    .about-intro {
+        margin-bottom: var(--space-12);
+    }
+
+    .lead {
+        font-size: var(--text-xl);
+        line-height: 1.8;
+        color: var(--color-text-muted);
+    }
+
+    .skills-section {
+        margin-bottom: var(--space-12);
+    }
+
+    .skills-section h2 {
+        margin-bottom: var(--space-6);
+    }
+
+    .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--space-4);
+    }
+
+    .skill-item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        padding: var(--space-4);
+    }
+
+    .skill-icon {
+        color: var(--color-accent);
+        font-weight: bold;
+    }
+
+    .experience-section {
+        margin-bottom: var(--space-12);
+        font-size: var(--text-lg);
+        line-height: 1.8;
+        color: var(--color-text-muted);
+    }
+
+    .cta-section {
+        text-align: center;
+    }
+</style>

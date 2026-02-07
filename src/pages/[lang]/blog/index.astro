@@ -1,0 +1,305 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Header from "../../../components/Header.astro";
+import Footer from "../../../components/Footer.astro";
+import BlogCard from "../../../components/BlogCard.astro";
+import { getAllPosts, getAllCategories, urlFor } from "../../../lib/sanity";
+import {
+    t,
+    translateToZh,
+    type SupportedLanguage,
+} from "../../../lib/translate";
+import type { Post } from "../../../lib/posts";
+
+export function getStaticPaths() {
+    return [{ params: { lang: "en" } }, { params: { lang: "zh" } }];
+}
+
+const { lang } = Astro.params as { lang: SupportedLanguage };
+
+const baseTitle = "Blog | SEO Insights & Case Studies";
+const baseDescription =
+    "Explore SEO strategies, case studies, and industry insights to help you improve your organic search presence.";
+
+const pageTitle = lang === "zh" ? await translateToZh(baseTitle) : baseTitle;
+const pageDescription =
+    lang === "zh" ? await translateToZh(baseDescription) : baseDescription;
+
+// Fetch posts and categories from Sanity
+const allPosts = await getAllPosts();
+const categories = await getAllCategories();
+
+// Translate posts if Chinese
+let displayPosts = allPosts;
+if (lang === "zh" && allPosts.length > 0) {
+    displayPosts = await Promise.all(
+        allPosts.map(async (post: Post) => ({
+            ...post,
+            title: await translateToZh(post.title),
+            excerpt: await translateToZh(post.excerpt),
+        })),
+    );
+}
+
+// Translate categories if Chinese
+let displayCategories = categories;
+if (lang === "zh" && categories.length > 0) {
+    displayCategories = await Promise.all(
+        categories.map(async (cat: any) => ({
+            ...cat,
+            title: await translateToZh(cat.title),
+        })),
+    );
+}
+---
+
+<BaseLayout title={pageTitle} description={pageDescription} lang={lang}>
+    <Header lang={lang} />
+
+    <main>
+        <!-- Blog Header -->
+        <section class="blog-header">
+            <div class="container">
+                <span class="page-label">{t("blog", lang)}</span>
+                <h1>
+                    {lang === "zh" ? "SEO见解与" : "SEO Insights &"}
+                    <span class="text-gradient"
+                        >{lang === "zh" ? "案例研究" : "Case Studies"}</span
+                    >
+                </h1>
+                <p class="page-description">
+                    {
+                        lang === "zh"
+                            ? "实用的SEO策略、真实案例研究和行业分析，帮助您提升自然搜索排名。"
+                            : "Practical SEO strategies, real-world case studies, and industry analysis to help you grow your organic presence."
+                    }
+                </p>
+            </div>
+        </section>
+
+        <!-- Categories Filter -->
+        {
+            displayCategories.length > 0 && (
+                <section class="categories">
+                    <div class="container">
+                        <div class="category-filter">
+                            <button
+                                class="category-btn active"
+                                data-category="all"
+                            >
+                                {t("allPosts", lang)}
+                            </button>
+                            {displayCategories.map((category: any) => (
+                                <button
+                                    class="category-btn"
+                                    data-category={category.slug}
+                                >
+                                    {category.title}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )
+        }
+
+        <!-- Blog Grid -->
+        <section class="section blog-grid-section">
+            <div class="container">
+                {
+                    displayPosts.length > 0 ? (
+                        <div class="blog-grid">
+                            {displayPosts.map((post: Post) => (
+                                <BlogCard
+                                    title={post.title}
+                                    excerpt={post.excerpt}
+                                    slug={post.slug}
+                                    date={post.publishedAt}
+                                    category={post.categories?.[0]?.title}
+                                    image={
+                                        post.featuredImage
+                                            ? urlFor(post.featuredImage)
+                                                  .width(800)
+                                                  .height(450)
+                                                  .url()
+                                            : undefined
+                                    }
+                                    lang={lang}
+                                />
+                            ))}
+                        </div>
+                    ) : (
+                        <div class="empty-state">
+                            <h3>{t("noPosts", lang)}</h3>
+                            <p>{t("noPostsDesc", lang)}</p>
+                        </div>
+                    )
+                }
+            </div>
+        </section>
+
+        <!-- Newsletter CTA -->
+        <section class="section newsletter">
+            <div class="container">
+                <div class="newsletter-card card-glass">
+                    <h2>{t("stayUpdated", lang)}</h2>
+                    <p class="text-muted">{t("newsletterDesc", lang)}</p>
+                    <form class="newsletter-form">
+                        <input
+                            type="email"
+                            placeholder={t("enterEmail", lang)}
+                            required
+                        />
+                        <button type="submit" class="btn btn-primary"
+                            >{t("subscribe", lang)}</button
+                        >
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <Footer />
+</BaseLayout>
+
+<style>
+    /* Blog Header */
+    .blog-header {
+        padding: var(--space-24) 0 var(--space-12);
+        text-align: center;
+    }
+
+    .page-label {
+        display: inline-block;
+        padding: var(--space-2) var(--space-4);
+        font-size: var(--text-sm);
+        font-weight: var(--font-medium);
+        color: var(--color-accent);
+        background: var(--color-accent-subtle);
+        border-radius: var(--border-radius-full);
+        margin-bottom: var(--space-6);
+    }
+
+    .blog-header h1 {
+        font-size: var(--text-5xl);
+        margin-bottom: var(--space-4);
+    }
+
+    .page-description {
+        font-size: var(--text-lg);
+        color: var(--color-text-muted);
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.7;
+    }
+
+    /* Categories */
+    .categories {
+        padding: var(--space-6) 0;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .category-filter {
+        display: flex;
+        gap: var(--space-3);
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .category-btn {
+        padding: var(--space-2) var(--space-4);
+        font-size: var(--text-sm);
+        font-weight: var(--font-medium);
+        color: var(--color-text-muted);
+        background: transparent;
+        border: 1px solid var(--color-border);
+        border-radius: var(--border-radius-full);
+        cursor: pointer;
+        transition: all var(--transition-base);
+    }
+
+    .category-btn:hover,
+    .category-btn.active {
+        color: var(--color-accent);
+        border-color: var(--color-accent);
+        background: var(--color-accent-subtle);
+    }
+
+    /* Blog Grid */
+    .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: var(--space-8);
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: var(--space-16) 0;
+    }
+
+    .empty-state h3 {
+        font-size: var(--text-2xl);
+        margin-bottom: var(--space-4);
+        color: var(--color-text);
+    }
+
+    .empty-state p {
+        color: var(--color-text-muted);
+    }
+
+    /* Newsletter */
+    .newsletter-card {
+        text-align: center;
+        padding: var(--space-12);
+        border-radius: var(--border-radius-xl);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .newsletter-card h2 {
+        margin-bottom: var(--space-3);
+    }
+
+    .newsletter-card p {
+        margin-bottom: var(--space-6);
+    }
+
+    .newsletter-form {
+        display: flex;
+        gap: var(--space-3);
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .newsletter-form input {
+        flex: 1;
+        padding: var(--space-3) var(--space-4);
+        font-size: var(--text-sm);
+        color: var(--color-text);
+        background: var(--color-card-bg);
+        border: 1px solid var(--color-border);
+        border-radius: var(--border-radius-md);
+        outline: none;
+        transition: border-color var(--transition-base);
+    }
+
+    .newsletter-form input::placeholder {
+        color: var(--color-text-subtle);
+    }
+
+    .newsletter-form input:focus {
+        border-color: var(--color-accent);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .newsletter-form {
+            flex-direction: column;
+        }
+
+        .newsletter-card {
+            padding: var(--space-8);
+        }
+    }
+</style>

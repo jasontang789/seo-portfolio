@@ -1,19 +1,29 @@
 ---
 // Header Component with Glassmorphism Effect
-// Sticky navigation with theme toggle
+// Sticky navigation with theme toggle and language switcher
+
+import { t, type SupportedLanguage } from "../lib/translate";
+
+interface Props {
+    lang?: SupportedLanguage;
+}
+
+const { lang = "en" } = Astro.props;
 
 const navItems = [
-    { label: "Home", href: "/" },
-    { label: "About Me", href: "/about" },
-    { label: "Blog", href: "/blog" },
+    { key: "home", href: `/${lang}` },
+    { key: "about", href: `/${lang}/about` },
+    { key: "blog", href: `/${lang}/blog` },
 ];
 
 const currentPath = Astro.url.pathname;
+const otherLang = lang === "en" ? "zh" : "en";
+const switchLangUrl = currentPath.replace(`/${lang}`, `/${otherLang}`);
 ---
 
 <header class="header">
     <nav class="nav container">
-        <a href="/" class="logo">
+        <a href={`/${lang}`} class="logo">
             <span class="logo-text"
                 >SEO<span class="logo-accent">Pro</span></span
             >
@@ -30,12 +40,12 @@ const currentPath = Astro.url.pathname;
                                 {
                                     active:
                                         currentPath === item.href ||
-                                        (item.href !== "/" &&
+                                        (item.href !== `/${lang}` &&
                                             currentPath.startsWith(item.href)),
                                 },
                             ]}
                         >
-                            {item.label}
+                            {t(item.key, lang)}
                         </a>
                     </li>
                 ))
@@ -43,6 +53,15 @@ const currentPath = Astro.url.pathname;
         </ul>
 
         <div class="nav-actions">
+            <!-- Language Toggle -->
+            <a
+                href={switchLangUrl}
+                class="lang-toggle"
+                aria-label="Switch language"
+            >
+                {lang === "en" ? "中文" : "EN"}
+            </a>
+
             <button
                 class="theme-toggle"
                 onclick="toggleTheme()"
@@ -165,7 +184,28 @@ const currentPath = Astro.url.pathname;
     .nav-actions {
         display: flex;
         align-items: center;
-        gap: var(--space-4);
+        gap: var(--space-3);
+    }
+
+    .lang-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--space-2) var(--space-3);
+        font-size: var(--text-sm);
+        font-weight: var(--font-medium);
+        color: var(--color-text);
+        background: transparent;
+        border: 1px solid var(--color-border);
+        border-radius: var(--border-radius-md);
+        text-decoration: none;
+        transition: all var(--transition-base);
+    }
+
+    .lang-toggle:hover {
+        background: var(--color-card-bg);
+        border-color: var(--color-accent);
+        color: var(--color-accent);
     }
 
     .theme-toggle {

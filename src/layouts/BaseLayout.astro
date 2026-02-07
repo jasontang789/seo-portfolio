@@ -1,78 +1,124 @@
 ---
-import '../styles/global.css';
+import "../styles/global.css";
+import type { SupportedLanguage } from "../lib/translate";
 
 interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  lang?: SupportedLanguage;
 }
 
-const { 
-  title, 
+const {
+  title,
   description = "SEO Professional Portfolio - Showcasing expertise in search engine optimization, content strategy, and digital marketing.",
-  ogImage = "/og-image.jpg"
+  ogImage = "/og-image.jpg",
+  lang = "en",
 } = Astro.props;
 
-const siteUrl = Astro.site || "https://your-domain.com";
+const siteUrl = Astro.site || "https://seo-portfolio.ray00ooki.workers.dev";
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl);
+
+// Determine the HTML lang attribute
+const htmlLang = lang === "zh" ? "zh-CN" : "en";
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="generator" content={Astro.generator} />
-  
-  <!-- Primary Meta Tags -->
-  <title>{title}</title>
-  <meta name="title" content={title} />
-  <meta name="description" content={description} />
-  <link rel="canonical" href={canonicalUrl} />
-  
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content={canonicalUrl} />
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={description} />
-  <meta property="og:image" content={ogImage} />
-  
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:url" content={canonicalUrl} />
-  <meta name="twitter:title" content={title} />
-  <meta name="twitter:description" content={description} />
-  <meta name="twitter:image" content={ogImage} />
-  
-  <!-- Fonts: Inter + Montserrat from Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet" />
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  
-  <!-- Theme Script (runs before render to prevent flash) -->
-  <script is:inline>
-    const theme = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', theme);
-  </script>
-</head>
-<body>
-  <slot />
-  
-  <!-- Theme Toggle Script -->
-  <script is:inline>
-    function toggleTheme() {
-      const html = document.documentElement;
-      const currentTheme = html.getAttribute('data-theme');
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      html.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-    }
-    
-    // Make toggleTheme available globally
-    window.toggleTheme = toggleTheme;
-  </script>
-</body>
+<!doctype html>
+<html lang={htmlLang} data-lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Language alternates for SEO -->
+    <link
+      rel="alternate"
+      hreflang="en"
+      href={new URL(Astro.url.pathname.replace(/^\/(en|zh)/, "/en"), siteUrl)}
+    />
+    <link
+      rel="alternate"
+      hreflang="zh"
+      href={new URL(Astro.url.pathname.replace(/^\/(en|zh)/, "/zh"), siteUrl)}
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={new URL(Astro.url.pathname.replace(/^\/(en|zh)/, "/en"), siteUrl)}
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={lang === "zh" ? "zh_CN" : "en_US"} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Fonts: Inter + Montserrat + Ma Shan Zheng (Chinese) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Ma+Shan+Zheng&family=Montserrat:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Theme Script (runs before render to prevent flash) -->
+    <script is:inline>
+      const theme = localStorage.getItem("theme") || "dark";
+      document.documentElement.setAttribute("data-theme", theme);
+    </script>
+
+    <!-- Language-specific styles -->
+    <style is:inline>
+      /* Chinese font for zh pages */
+      [data-lang="zh"] {
+        --font-heading: "Ma Shan Zheng", cursive;
+        --font-body: "Inter", -apple-system, sans-serif;
+      }
+
+      [data-lang="zh"] h1,
+      [data-lang="zh"] h2,
+      [data-lang="zh"] h3,
+      [data-lang="zh"] h4,
+      [data-lang="zh"] h5,
+      [data-lang="zh"] h6 {
+        font-family: "Ma Shan Zheng", cursive;
+        font-weight: 400;
+      }
+    </style>
+  </head>
+  <body>
+    <slot />
+
+    <!-- Theme Toggle Script -->
+    <script is:inline>
+      function toggleTheme() {
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute("data-theme");
+        const newTheme = currentTheme === "dark" ? "light" : "dark";
+        html.setAttribute("data-theme", newTheme);
+        localStorage.setItem("theme", newTheme);
+      }
+
+      // Make toggleTheme available globally
+      window.toggleTheme = toggleTheme;
+    </script>
+  </body>
 </html>
