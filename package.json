@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.12",
+    "@astrojs/sitemap": "^3.7.0",
     "@google/generative-ai": "^0.24.1",
     "@portabletext/react": "^6.0.2",
     "@sanity/client": "^7.14.1",

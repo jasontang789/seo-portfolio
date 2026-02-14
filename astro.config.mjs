@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 
 import tailwindcss from '@tailwindcss/vite';
 
@@ -6,6 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
     site: 'https://seo-portfolio.pages.dev',
     output: 'static',  // Static build (reliable on Cloudflare)
+    integrations: [sitemap()],
     build: {
         inlineStylesheets: 'always',
     },

@@ -4,3 +4,6 @@ Allow: /
 
 # Block common bot paths
 Disallow: /api/
+
+# Sitemap
+Sitemap: https://seo-portfolio.pages.dev/sitemap-index.xml
