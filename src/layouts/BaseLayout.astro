@@ -48,6 +48,23 @@ const htmlLang = lang === "zh" ? "zh-CN" : "en";
     </script>
     <!-- End Google Tag Manager -->
 
+    <!-- Google Analytics GA4 -->
+    <script is:inline>
+      setTimeout(function () {
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-1EHYKKY4KE';
+        document.head.appendChild(s);
+        s.onload = function () {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-1EHYKKY4KE');
+        };
+      }, 3500);
+    </script>
+    <!-- End Google Analytics GA4 -->
+
     <!-- Primary Meta Tags -->
     <title>{title}</title>
     <meta name="title" content={title} />
