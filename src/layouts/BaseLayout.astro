@@ -31,37 +31,32 @@ const htmlLang = lang === "zh" ? "zh-CN" : "en";
     <meta name="generator" content={Astro.generator} />
 
     <!-- Google Tag Manager -->
-    <!-- Google Tag Manager (Deferred for Performance) -->
     <script is:inline>
-      setTimeout(function () {
-        (function (w, d, s, l, i) {
-          w[l] = w[l] || [];
-          w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-          var f = d.getElementsByTagName(s)[0],
-            j = d.createElement(s),
-            dl = l != "dataLayer" ? "&l=" + l : "";
-          j.async = true;
-          j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-          f.parentNode.insertBefore(j, f);
-        })(window, document, "script", "dataLayer", "GTM-TSCM9MFC");
-      }, 3500);
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-TSCM9MFC");
     </script>
     <!-- End Google Tag Manager -->
 
     <!-- Google Analytics GA4 -->
+    <script
+      is:inline
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-1EHYKKY4KE"></script>
     <script is:inline>
-      setTimeout(function () {
-        var s = document.createElement('script');
-        s.async = true;
-        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-1EHYKKY4KE';
-        document.head.appendChild(s);
-        s.onload = function () {
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-1EHYKKY4KE');
-        };
-      }, 3500);
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-1EHYKKY4KE");
     </script>
     <!-- End Google Analytics GA4 -->
 
