@@ -1,4 +1,3 @@
-# Ensure XML sitemaps are served with correct content type and not indexed
+# Ensure XML sitemaps are served with correct content type
 /sitemap*.xml
   Content-Type: application/xml
-  X-Robots-Tag: noindex
