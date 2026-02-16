@@ -7,7 +7,17 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
     site: 'https://seo-portfolio.pages.dev',
     output: 'static',  // Static build (reliable on Cloudflare)
-    integrations: [sitemap()],
+    integrations: [
+        sitemap({
+            filter: (page) => {
+                const url = new URL(page);
+                const path = url.pathname;
+                // Only include localized pages (/en/ and /zh/) in sitemap
+                // Exclude bare root paths that are redirect-only pages
+                return path.startsWith('/en/') || path.startsWith('/zh/');
+            },
+        }),
+    ],
     build: {
         inlineStylesheets: 'always',
     },

@@ -1,0 +1,8 @@
+# Ensure XML sitemaps are served with correct content type
+/sitemap*.xml
+  Content-Type: application/xml
+  X-Robots-Tag: noindex
+
+# Allow all crawlers access to static assets
+/*
+  X-Robots-Tag: none
