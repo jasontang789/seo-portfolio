@@ -32,7 +32,7 @@ const translations = {
 };
 
 const t = translations[lang];
-const RECAPTCHA_SITE_KEY = "6LeQYGMsAAAAAKVEO5JD3PLKai_LUGUJZv0eP2mo";
+const RECAPTCHA_SITE_KEY = "6LdS1XEqAAAAAOdrRq9UhoLWpZ_PW59lLusDRFSC";
 const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
 ---
 
@@ -239,13 +239,28 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
                             : "🔒 Your information is secure and will never be shared."
                     }
                 </p>
+                <p
+                    class="text-[10px] text-text-muted/50 text-center mt-2 px-4 leading-tight"
+                >
+                    This site is protected by reCAPTCHA and the Google
+                    <a
+                        href="https://policies.google.com/privacy"
+                        class="underline hover:text-text-muted"
+                        >Privacy Policy</a
+                    > and
+                    <a
+                        href="https://policies.google.com/terms"
+                        class="underline hover:text-text-muted"
+                        >Terms of Service</a
+                    > apply.
+                </p>
             </form>
         </div>
     </div>
 </section>
 
-<!-- Form Script - Simple submission without reCAPTCHA requirement -->
-<script is:inline>
+<!-- Form Script - With reCAPTCHA Enterprise Integration -->
+<script is:inline define:vars={{ RECAPTCHA_SITE_KEY }}>
     document.addEventListener("DOMContentLoaded", function () {
         const form = document.getElementById("contact-form");
         if (!form) return;
@@ -267,7 +282,32 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
             formStatus.textContent = "";
 
             try {
+                // Execute reCAPTCHA Enterprise
+                let token = "";
+                if (window.grecaptcha) {
+                    try {
+                        token = await new Promise((resolve) => {
+                            grecaptcha.enterprise.ready(async () => {
+                                const t = await grecaptcha.enterprise.execute(
+                                    RECAPTCHA_SITE_KEY,
+                                    { action: "CONTACT" },
+                                );
+                                resolve(t);
+                            });
+                        });
+                        console.log("reCAPTCHA Token generated");
+                    } catch (err) {
+                        console.warn(
+                            "reCAPTCHA failed to load, submitting anyway",
+                            err,
+                        );
+                    }
+                }
+
                 const formData = new FormData(form);
+                if (token) {
+                    formData.append("g-recaptcha-response", token);
+                }
 
                 const response = await fetch(form.action, {
                     method: "POST",
