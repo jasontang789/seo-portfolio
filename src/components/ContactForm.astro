@@ -282,55 +282,27 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
             formStatus.textContent = "";
 
             try {
-                // Execute reCAPTCHA Enterprise with Timeout
+                // Execute reCAPTCHA Enterprise (Strict - No Timeout)
                 let token = "";
                 if (window.grecaptcha) {
                     try {
                         console.log("Generating reCAPTCHA token...");
-                        const recaptchaPromise = new Promise((resolve) => {
+                        token = await new Promise((resolve) => {
                             grecaptcha.enterprise.ready(async () => {
                                 try {
-                                    const t =
-                                        await grecaptcha.enterprise.execute(
-                                            RECAPTCHA_SITE_KEY,
-                                            { action: "CONTACT" },
-                                        );
+                                    const t = await grecaptcha.enterprise.execute(
+                                        RECAPTCHA_SITE_KEY,
+                                        { action: "CONTACT" }
+                                    );
                                     resolve(t);
                                 } catch (err) {
-                                    console.warn(
-                                        "reCAPTCHA execution error:",
-                                        err,
-                                    );
-                                    resolve(""); // Fail gracefully
+                                    console.warn("reCAPTCHA execution error:", err);
+                                    resolve(""); // Should likely be handled as an error if strict
                                 }
                             });
                         });
-
-                        const timeoutPromise = new Promise((resolve) => {
-                            setTimeout(() => {
-                                console.warn(
-                                    "reCAPTCHA timed out - submitting without token",
-                                );
-                                resolve("");
-                            }, 5000); // 5-second hard timeout
-                        });
-
-                        // Race: whichever finishes first (token or timeout) wins
-                        token = await Promise.race([
-                            recaptchaPromise,
-                            timeoutPromise,
-                        ]);
-                        console.log(
-                            "reCAPTCHA Token result:",
-                            token ? "Generated" : "Empty (Timeout/Error)",
-                        );
+                        console.log("reCAPTCHA Token generated");
                     } catch (err) {
-                        console.warn(
-                            "reCAPTCHA failed entirely, submitting anyway",
-                            err,
-                        );
-                    }
-                } else {
                     console.log(
                         "reCAPTCHA library not found, submitting without it.",
                     );
