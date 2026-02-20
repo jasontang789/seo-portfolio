@@ -282,26 +282,58 @@ const WEB3FORMS_KEY = "6f64563a-9571-4fd9-b1ef-0bba06d5eb68";
             formStatus.textContent = "";
 
             try {
-                // Execute reCAPTCHA Enterprise
+                // Execute reCAPTCHA Enterprise with Timeout
                 let token = "";
                 if (window.grecaptcha) {
                     try {
-                        token = await new Promise((resolve) => {
+                        console.log("Generating reCAPTCHA token...");
+                        const recaptchaPromise = new Promise((resolve) => {
                             grecaptcha.enterprise.ready(async () => {
-                                const t = await grecaptcha.enterprise.execute(
-                                    RECAPTCHA_SITE_KEY,
-                                    { action: "CONTACT" },
-                                );
-                                resolve(t);
+                                try {
+                                    const t =
+                                        await grecaptcha.enterprise.execute(
+                                            RECAPTCHA_SITE_KEY,
+                                            { action: "CONTACT" },
+                                        );
+                                    resolve(t);
+                                } catch (err) {
+                                    console.warn(
+                                        "reCAPTCHA execution error:",
+                                        err,
+                                    );
+                                    resolve(""); // Fail gracefully
+                                }
                             });
                         });
-                        console.log("reCAPTCHA Token generated");
+
+                        const timeoutPromise = new Promise((resolve) => {
+                            setTimeout(() => {
+                                console.warn(
+                                    "reCAPTCHA timed out - submitting without token",
+                                );
+                                resolve("");
+                            }, 5000); // 5-second hard timeout
+                        });
+
+                        // Race: whichever finishes first (token or timeout) wins
+                        token = await Promise.race([
+                            recaptchaPromise,
+                            timeoutPromise,
+                        ]);
+                        console.log(
+                            "reCAPTCHA Token result:",
+                            token ? "Generated" : "Empty (Timeout/Error)",
+                        );
                     } catch (err) {
                         console.warn(
-                            "reCAPTCHA failed to load, submitting anyway",
+                            "reCAPTCHA failed entirely, submitting anyway",
                             err,
                         );
                     }
+                } else {
+                    console.log(
+                        "reCAPTCHA library not found, submitting without it.",
+                    );
                 }
 
                 const formData = new FormData(form);
